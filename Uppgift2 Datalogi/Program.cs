@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Uppgift2_Datalogi
 {
@@ -6,7 +7,7 @@ namespace Uppgift2_Datalogi
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            List<Node> Nodes = new List<Node>();
         }
     }
 }
