@@ -7,7 +7,13 @@ namespace Uppgift2_Datalogi
     {
         static void Main(string[] args)
         {
-            List<Node> Nodes = new List<Node>();
+            var nodes = new List<Node>();
+            Seeder.Seed(nodes);
+
+            foreach (var node in nodes)
+            {
+                Console.WriteLine(node);
+            }
         }
     }
 }
