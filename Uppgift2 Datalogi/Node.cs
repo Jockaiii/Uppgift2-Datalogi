@@ -6,6 +6,5 @@ namespace Uppgift2_Datalogi
 {
     class Node
     {
-        
     }
 }
