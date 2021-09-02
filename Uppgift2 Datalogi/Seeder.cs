@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Text;
 
-    static class Seeder
+    static public class Seeder
     {
         static public void Seed(List<Node> nodes)
         {
@@ -39,7 +39,7 @@
 
             // add edges for node B
             nodeB.Edges.Add((nodeA, 4));
-            nodeB.Edges.Add((nodeC, 7));
+            nodeB.Edges.Add((nodeC, 3));
             nodeB.Edges.Add((nodeH, 5));
             nodeB.Edges.Add((nodeD, 12));
 
