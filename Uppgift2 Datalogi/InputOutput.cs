@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Uppgift2_Datalogi
+﻿namespace Uppgift2_Datalogi
 {
+    using System;
+    using System.Collections.Generic;
+
     class InputOutput
     {
         public static List<string> UserNodes { get; set; } = new List<string>();

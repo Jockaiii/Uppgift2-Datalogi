@@ -1,8 +1,6 @@
 ﻿namespace Uppgift2_Datalogi
 {
-    using System;
     using System.Collections.Generic;
-    using System.Text;
 
     static public class Seeder
     {

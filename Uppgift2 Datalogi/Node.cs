@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace Uppgift2_Datalogi
+{
+    using System.Collections.Generic;
 
-namespace Uppgift2_Datalogi
-{ 
-        
     public class Node
     {
         public string Name { get; set; }
