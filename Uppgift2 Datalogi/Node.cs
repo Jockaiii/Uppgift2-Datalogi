@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Uppgift2_Datalogi
 {
-    class Node
+    public class Node
     {
         public List<(Node node, int weight)> Edges { get; set; } = new List<(Node, int)>();
         public string Name { get; set; }
@@ -20,7 +20,7 @@ namespace Uppgift2_Datalogi
 
             foreach (var (node, weight) in Edges)
             {
-                nodeToString += $"{node.Name}@{weight} ";
+                nodeToString += $"{node.Name}({weight}) ";
             }
 
             return nodeToString;
