@@ -5,9 +5,12 @@ namespace Uppgift2_Datalogi
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            List<Node> Nodes = new List<Node>();
+            Seeder.NodeSeeder();
+            Seeder.EdgeSeeder();
+
+            InputOutput.UserChoice();
         }
     }
 }

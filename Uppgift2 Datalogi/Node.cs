@@ -6,6 +6,13 @@ namespace Uppgift2_Datalogi
 {
     class Node
     {
-        public List<(Node node, int weight)> Edges = new List<(Node node, int weight)>();
+        public string Name { get; set; }
+        public List<string> Connections { get; set; }
+
+        public Node(string name, List<string> connections)
+        {
+            Name = name;
+            Connections = connections;
+        }
     }
 }
