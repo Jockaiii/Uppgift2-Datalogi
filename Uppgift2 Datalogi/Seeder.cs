@@ -39,6 +39,7 @@
             { ("H-J", 9) },
             { ("I-J", 7) },
         };
+
         public static void NodeSeeder()
         {
             foreach (var (nodeName, connections) in nodeSeedList)
@@ -51,6 +52,10 @@
                 RouteCity.Edges.Add(new Edge(name, weight));
         }
 
+        /// <summary>
+        /// Add seed data for nodes and edges between nodes.
+        /// </summary>
+        /// <param name="nodes">List of nodes in the network.</param>
         static public void Seed(List<Node> nodes)
         {
             // declare nodes

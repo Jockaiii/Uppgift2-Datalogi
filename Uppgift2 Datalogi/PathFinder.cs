@@ -11,7 +11,7 @@
         {
             var paths = new List<(List<Node> visited, int cost, bool found)>();
 
-            // TODO: get all possible paths.
+            // TODO: out of all possible paths which is fastest?
 
             // Get a path...
             var (visited, cost, found) = FindPath(start, end, 0, (new List<Node>() { start }, 0, false));
