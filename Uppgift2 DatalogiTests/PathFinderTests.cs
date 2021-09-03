@@ -13,6 +13,7 @@ namespace Uppgift2_Datalogi.Tests
         [TestInitialize()]
         public void TestInitialize()
         {
+            // Setup the node network with seed data.
             Nodes = new List<Node>();
             Seeder.Seed(Nodes);
         }
@@ -51,17 +52,22 @@ namespace Uppgift2_Datalogi.Tests
 
             var actual = PathFinder.ShortestPath(nodeA, nodeJ);
 
+            // Assert fail if any node visited was not in expected
             foreach (var node in actual.visited)
             {
                 if (!expected.visited.Contains(node)) Assert.Fail();
-
-
+            }
+            // Assert fail if any node in expected was not actually visited.
+            foreach (var node in expected.visited)
+            {
+                if (!actual.visited.Contains(node)) Assert.Fail();
             }
 
-            //if (expected.visited.Except(actual.visited).ToList().Any() && actual.visited.Except(expected.visited).ToList().Any())
-            //    Assert.Fail();
+            // Assert actual cost to be as expected.
+            Assert.AreEqual(expectedTotalCost, actual.cost);
 
-            Assert.AreEqual(expected, actual);
+            // Assert that a path was found between start and end node. 
+            Assert.IsTrue(actual.found);
         }
 
         [TestMethod()]
@@ -71,9 +77,9 @@ namespace Uppgift2_Datalogi.Tests
             Node nodeB = Nodes.Find((node) => node.Name == "B");
             Node nodeC = Nodes.Find((node) => node.Name == "C");
             Node nodeG = Nodes.Find((node) => node.Name == "G");
-            Node nodeOe = new Node("Ö");
+            Node nodeZ = new Node("Z");
 
-            var actual = PathFinder.ShortestPath(nodeA, nodeOe);
+            var actual = PathFinder.ShortestPath(nodeA, nodeZ);
 
             Assert.IsFalse(actual.found);
         }
