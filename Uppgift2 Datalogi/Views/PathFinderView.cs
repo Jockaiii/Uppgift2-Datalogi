@@ -24,7 +24,7 @@
             var exit = false;
             while (!exit)
             {
-                // Present user with the available options.
+                // Present user with options.
                 switch (ConsoleInput.PromptMenuSelect())
                 {
                     case "1":

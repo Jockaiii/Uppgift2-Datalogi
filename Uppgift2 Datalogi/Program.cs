@@ -14,9 +14,7 @@ namespace Uppgift2_Datalogi
 
             InputOutput.StartMenu();
 
-            var nodes = new List<Node>();
-            Seeder.Seed(nodes);
-
+            var nodes = Seeder.Data();
             var view = new PathFinderView(nodes);
             view.StartMenu();
         }

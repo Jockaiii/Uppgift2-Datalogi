@@ -8,9 +8,10 @@
     internal static class ConsoleInput
     {
         /// <summary>
-        /// Prompt user to select an item in the menu, if a valid menu item is not entered the user is prompted again.
+        /// Prompt user to select an item in the menu.
+        /// User is prompted until a valid menu item has been selected.
         /// </summary>
-        /// <returns>Selected menu items string representation.</returns>
+        /// <returns>String representing menu item selected.</returns>
         public static string PromptMenuSelect()
         {
             Console.WriteLine("Select");
@@ -19,10 +20,10 @@
             Console.WriteLine(" [3] Write network");
             Console.WriteLine(" [E] Exit");
             Console.Write("> ");
-            var input = Console.ReadLine().ToUpper();
+            var input = Console.ReadLine();
             Console.WriteLine();
 
-            return input switch
+            return input.ToUpper() switch
             {
                 "1" => input,
                 "2" => input,
@@ -33,7 +34,7 @@
         }
 
         /// <summary>
-        /// Prompt user for a number, if a valid number is not entered the user is prompted again.
+        /// Prompt user for a number, if a valid number is not entered the user is prompted until one is.
         /// </summary>
         /// <param name="minAllowed">Min allowed input.</param>
         /// <param name="maxAllowed">Max allowed input.</param>
@@ -61,7 +62,7 @@
         /// </summary>
         /// <param name="validNodes">Nodes to select from.</param>
         /// <param name="nodePurpose">Purpose of the node to instruct user, i.e. visiting.</param>
-        /// <returns>User selected node.</returns>
+        /// <returns>Node from <paramref name="validNodes"/> selected by user.</returns>
         public static Node PromptNode(List<Node> validNodes, string nodePurpose)
         {
             Console.WriteLine($"Select {nodePurpose} node");

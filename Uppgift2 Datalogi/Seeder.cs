@@ -53,11 +53,13 @@
         }
 
         /// <summary>
-        /// Add seed data for nodes and edges between nodes. 
+        /// Get seed data for nodes and edges.
         /// </summary>
-        /// <param name="nodes">List of nodes in the network.</param>
-        static public void Seed(List<Node> nodes)
+        /// <returns>List of nodes connected by edges.</returns>
+        static public List<Node> Data()
         {
+            List<Node> nodes = new List<Node>();
+
             // declare nodes
             var nodeA = new Node("A");
             var nodeB = new Node("B");
@@ -83,12 +85,6 @@
             nodes.Add(nodeI);
             nodes.Add(nodeJ);
             nodes.Add(nodeHindoes);
-
-            //static void AddEdgeBothDirections(Node nodeA, int weight, Node nodeB)
-            //{
-            //    nodeA.Edges.Add((nodeB, weight));
-            //    nodeB.Edges.Add((nodeA, weight));
-            //}
 
             // add edges for node A
             nodeA.Edges.Add((nodeB, 4));
@@ -151,6 +147,8 @@
             // add edges for node Hindås
             nodeHindoes.Edges.Add((nodeA, 31));
             nodeHindoes.Edges.Add((nodeJ, 2));
+
+            return nodes;
         }
     }
 }
