@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Uppgift2_Datalogi.Views;
-
+﻿
 namespace Uppgift2_Datalogi
 {
+    using System;
+    using System.Collections.Generic;
+    using Uppgift2_Datalogi.Views;
+
     class Program
     {
         static void Main()
@@ -11,7 +12,7 @@ namespace Uppgift2_Datalogi
             Seeder.NodeSeeder();
             Seeder.EdgeSeeder();
 
-            InputOutput.UserChoice();
+            InputOutput.StartMenu();
 
             var nodes = new List<Node>();
             Seeder.Seed(nodes);

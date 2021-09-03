@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Uppgift2_Datalogi
+﻿namespace Uppgift2_Datalogi
 {
+    using System.Collections.Generic;
+
     static class RouteCity
     {
         public static List<Node> Nodes { get; set; } = new List<Node>();
