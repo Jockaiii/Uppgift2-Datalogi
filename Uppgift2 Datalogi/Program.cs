@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Uppgift2_Datalogi
+﻿namespace Uppgift2_Datalogi
 {
     class Program
     {
@@ -10,7 +7,7 @@ namespace Uppgift2_Datalogi
             Seeder.NodeSeeder();
             Seeder.EdgeSeeder();
 
-            InputOutput.UserChoice();
+            InputOutput.StartMenu();
         }
     }
 }

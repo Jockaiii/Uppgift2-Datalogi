@@ -2,31 +2,30 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     class InputOutput
     {
         public static List<string> UserNodes { get; set; } = new List<string>();
-        //public static bool OnlyOneStop { get; set; }
+        public static bool OnlyOneStop { get; set; }
 
-        public static void UserChoice()
+        public static void StartMenu()
         {
             string userInput;
             do
             {
                 Console.WriteLine("[1] To calculate the shortest route between 2 nodes of your choice\n" +
-                    "[2] To calculate the shortest route between 2 nodes of your choice with one stop\n[3] To close the application\n");
+                    "[2] To calculate the shortest route between 2 nodes of your choice with a stop of your choice\n[3] To close the application\n");
                 Console.Write("Input: ");
                 userInput = Console.ReadLine();
 
                 switch (userInput)
                 {
                     case "1":
-                        NodeInputHandler();
+                        NodeInputHandler(int.Parse(userInput));
                         break;
                     case "2":
-                        NodeInputHandler();
-                        //OnlyOneStop = true;
+                        NodeInputHandler(int.Parse(userInput));
+                        OnlyOneStop = true;
                         break;
                     case "3":
                         break;
@@ -37,29 +36,31 @@
                 }
             } while (!int.TryParse(userInput, out _) && userInput.Length > 0 && userInput.Length < 4);
         }
-
-        public static void NodeInputHandler()
+        public static void NodeInputHandler(int userInput)
         {
             string userNode;
-            for (int currentNode = 0; currentNode < 2; currentNode++)
+            for (int currentNode = 0; currentNode < userInput + 1; currentNode++)
             {
                 Console.Clear();
                 do
                 {
                     userNode = InputNode(currentNode);
                 } while (!CheckNodeInput(userNode));
+
                 AddUserNode(userNode);
 
                 //if (OnlyOneStop) // om användaren har valt 2 punkter med endast ett delmål
                 //    CheckOnlyOneStop();
             }
         }
+
         public static string InputNode(int currentNode)
         {
             Console.WriteLine($"Please choose node {currentNode + 1}");
             Console.Write("\nInput: ");
             return Console.ReadLine().ToUpper();
         }
+
 
         public static bool CheckNodeInput(string userNode)
         {
