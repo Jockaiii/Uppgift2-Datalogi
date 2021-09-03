@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Uppgift2_Datalogi.Views;
 
 namespace Uppgift2_Datalogi
 {
@@ -11,6 +12,12 @@ namespace Uppgift2_Datalogi
             Seeder.EdgeSeeder();
 
             InputOutput.UserChoice();
+
+            var nodes = new List<Node>();
+            Seeder.Seed(nodes);
+
+            var view = new PathFinderView(nodes);
+            view.StartMenu();
         }
     }
 }
