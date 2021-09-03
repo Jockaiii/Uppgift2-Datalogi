@@ -21,11 +21,11 @@
 
         public override string ToString()
         {
-            var nodeToString = $"{Name}: ";
+            var nodeToString = $"{Name}:";
 
             foreach (var (node, weight) in Edges)
             {
-                nodeToString += $"{node.Name}({weight}) ";
+                nodeToString += $"\t{node.Name}({weight}) ";
             }
 
             return nodeToString;
