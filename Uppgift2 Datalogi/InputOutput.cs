@@ -7,7 +7,7 @@
     class InputOutput
     {
         public static List<string> UserNodes { get; set; } = new List<string>();
-        public static bool OnlyOneStop { get; set; }
+        //public static bool OnlyOneStop { get; set; }
 
         public static void UserChoice()
         {
@@ -50,8 +50,8 @@
                 } while (!CheckNodeInput(userNode));
                 AddUserNode(userNode);
 
-                if (OnlyOneStop) // om användaren har valt 2 punkter med endast ett delmål
-                    CheckOnlyOneStop();
+                //if (OnlyOneStop) // om användaren har valt 2 punkter med endast ett delmål
+                //    CheckOnlyOneStop();
             }
         }
         public static string InputNode(int currentNode)
@@ -63,17 +63,12 @@
 
         public static bool CheckNodeInput(string userNode)
         {
-            List<string> nodes = new List<string>
-            {
-                "A", "B", "C", "D", "E", "F", "G", "H", "I", "J"
-            };
-
-            if (nodes.Contains(userNode) && !UserNodes.Contains(userNode))
+            if (CheckValidNode(userNode) && !UserNodes.Contains(userNode))
                 return true;
             else
             {
                 Console.Clear();
-                if (!nodes.Contains(userNode))
+                if (!CheckValidNode(userNode))
                     Console.WriteLine("That node does not exist, please try again\n");
                 else if (userNode.Contains(userNode))
                     Console.WriteLine("That node has already been selected, please choose another one\n");
@@ -88,34 +83,30 @@
             UserNodes.Add(userNode);
         }
 
-        public static void CheckOnlyOneStop()
-        {
-            var node1 = RouteCity.Nodes.Where(w => w.Name == UserNodes[0]);
-            var node2 = RouteCity.Nodes.Where(w => w.Name == UserNodes[1]);
+        //public static void CheckOnlyOneStop()
+        //{
+        //    var node1 = RouteCity.Nodes.Where(w => w.Name == UserNodes[0]);
+        //    var node2 = RouteCity.Nodes.Where(w => w.Name == UserNodes[1]);
 
-            foreach (var property1 in node1)
-                foreach (var property2 in node2)
-                    foreach (var element1 in property1.Connections)
-                        foreach (var element2 in property2.Connections)
-                        {
-                            if (element1 == element2)
-                            {
+        //    foreach (var property1 in node1)
+        //        foreach (var property2 in node2)
+        //            foreach (var element1 in property1.Connections)
+        //                foreach (var element2 in property2.Connections)
+        //                {
+        //                    if (element1 == element2)
+        //                    {
                                 
-                            }
-                        }
-            Console.WriteLine("Those nodes can not be reached with just one stop");
-            UserChoice();
-        }
+        //                    }
+        //                }
+        //    Console.WriteLine("Those nodes can not be reached with just one stop");
+        //    UserChoice();
+        //}
 
         public static bool CheckValidNode(string userNode)
         {
             foreach (var node in RouteCity.Nodes)
-            {
                 if (node.Name == userNode)
-                {
                     return true;
-                }
-            }
             return false;
         }
     }
