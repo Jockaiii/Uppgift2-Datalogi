@@ -53,7 +53,7 @@
         }
 
         /// <summary>
-        /// Add seed data for nodes and edges between nodes.
+        /// Add seed data for nodes and edges between nodes. 
         /// </summary>
         /// <param name="nodes">List of nodes in the network.</param>
         static public void Seed(List<Node> nodes)
@@ -69,6 +69,7 @@
             var nodeH = new Node("H");
             var nodeI = new Node("I");
             var nodeJ = new Node("J");
+            var nodeHindoes = new Node("Hindås");
 
             // add nodes
             nodes.Add(nodeA);
@@ -81,11 +82,20 @@
             nodes.Add(nodeH);
             nodes.Add(nodeI);
             nodes.Add(nodeJ);
+            nodes.Add(nodeHindoes);
+
+            //static void AddEdgeBothDirections(Node nodeA, int weight, Node nodeB)
+            //{
+            //    nodeA.Edges.Add((nodeB, weight));
+            //    nodeB.Edges.Add((nodeA, weight));
+            //}
 
             // add edges for node A
             nodeA.Edges.Add((nodeB, 4));
             nodeA.Edges.Add((nodeC, 7));
             nodeA.Edges.Add((nodeE, 7));
+            nodeA.Edges.Add((nodeE, 7));
+            nodeA.Edges.Add((nodeHindoes, 31));
 
             // add edges for node B
             nodeB.Edges.Add((nodeA, 4));
@@ -136,6 +146,11 @@
             nodeJ.Edges.Add((nodeI, 7));
             nodeJ.Edges.Add((nodeG, 8));
             nodeJ.Edges.Add((nodeH, 9));
+            nodeJ.Edges.Add((nodeHindoes, 2));
+
+            // add edges for node Hindås
+            nodeHindoes.Edges.Add((nodeA, 31));
+            nodeHindoes.Edges.Add((nodeJ, 2));
         }
     }
 }
