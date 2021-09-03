@@ -2,8 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
-    using System.Linq;
 
     public static class PathFinder
     {
@@ -48,6 +46,18 @@
         public static int ShortestPath(Node start, Node visit, Node end)
         {
             throw new NotImplementedException();
+        }
+
+        public static void PathHandler()
+        {
+            if (InputOutput.UserNodes.Count == 2) // om användaren har valt 2 nodes
+            {
+
+            }
+            else // om användaren har valt 2 nodes med en mellanlandning
+            {
+
+            }
         }
     }
 }
