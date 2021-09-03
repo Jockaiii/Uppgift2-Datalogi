@@ -26,7 +26,7 @@
                         break;
                     case "2":
                         NodeInputHandler();
-                        OnlyOneStop = true;
+                        //OnlyOneStop = true;
                         break;
                     case "3":
                         break;
