@@ -102,7 +102,12 @@
                 foreach (var nodeName2 in RouteCity.Nodes.Find(f => f.Name == nodeName).Connections)
                     if (nodeName2 == endNode.Name)
                     {
+                        string edgeName1 = RouteCity.Nodes.First(f => f.Name == nodeName).Name + nodeName2;
+                        string edgeName2 = RouteCity.Nodes.First(f => f.Name == nodeName2).Name + endNode.Name;
 
+                        TotalWeight = RouteCity.Edges.Find(f => f.Name == edgeName1).Weight + RouteCity.Edges.Find(f => f.Name == edgeName2).Weight + RouteCity.Edges.Find(f => f.Name == nodeName + startNode.Name).Weight;
+                        VisitedNodes.Add(nodeName);
+                        VisitedNodes.Add(nodeName2);
                     }
         }
     }
