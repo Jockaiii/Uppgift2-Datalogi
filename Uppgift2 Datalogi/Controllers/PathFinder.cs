@@ -61,19 +61,25 @@
                 var startNode = RouteCity.Nodes.First(f => f.Name == InputOutput.UserNodes[0]);
                 var endNode = RouteCity.Nodes.First(f => f.Name == InputOutput.UserNodes[1]);
 
-                if (!CheckForEndNodeAroundStartNode(startNode, endNode)) // Om slutnoden ligger brevid startnoden
+                if (!CheckForEndNodeFrom1NodeAway(startNode, endNode)) // Om slutnoden ligger brevid startnoden
                     if (!CheckEndNodeFrom2NodesAway(startNode, endNode)) // Om slutnoden inte ligger brevid startnoden
                         CheckEndNodeFrom3NodesAway(startNode, endNode); // Kollar alla noder som ligger 3 noder ifrån startnoden
             }
-            else // om användaren har valt 2 nodes med en mellanlandning
+            else if (InputOutput.UserNodes.Count == 3)// om användaren har valt 2 nodes med en mellanlandning
             {
                 var startNode = RouteCity.Nodes.First(f => f.Name == InputOutput.UserNodes[0]);
                 var stopNode = RouteCity.Nodes.First(f => f.Name == InputOutput.UserNodes[1]);
                 var endNode = RouteCity.Nodes.First(f => f.Name == InputOutput.UserNodes[2]);
             }
+            else
+            {
+                InputOutput.UserNodes.Reverse(); // flippar ordningen av userinputs så att dom hamnar i bokstavsordning så algoritmen kan hitta path.
+                InputOutput.ReverseResultOutput = true;
+                PathHandler(); // rekurserar PathHandler() med den nya ordningen av UserNodes
+            }
         }
 
-        public static bool CheckForEndNodeAroundStartNode(Node startNode, Node endNode)
+        public static bool CheckForEndNodeFrom1NodeAway(Node startNode, Node endNode)
         {
             if (startNode.Connections.Contains(endNode.Name))
             {
@@ -86,13 +92,14 @@
         public static bool CheckEndNodeFrom2NodesAway(Node startNode, Node endNode)
         {
             foreach (var nodeName in startNode.Connections) // Kollar alla noder som ligger brevid startnodens connections.
-                if (RouteCity.Nodes.First(f => f.Name == nodeName).Name == endNode.Name)
-                {
-                    string edgeName = RouteCity.Nodes.First(f => f.Name == nodeName).Name + endNode.Name;
-                    TotalWeight = RouteCity.Edges.Find(f => f.Name == edgeName).Weight + RouteCity.Edges.Find(f => f.Name == nodeName + startNode.Name).Weight;
-                    VisitedNodes.Add(nodeName); // Den mittersta nodens namn i pathen (första och sista finns i InputOutput.UserNodes
-                    return true;
-                }
+                foreach (var nodeName2 in RouteCity.Nodes.Find(f => f.Name == nodeName).Connections)
+                    if (nodeName2 == endNode.Name)
+                    {
+                        string edgeName = nodeName + nodeName2;
+                        TotalWeight = RouteCity.Edges.Find(f => f.Name == edgeName).Weight + RouteCity.Edges.Find(f => f.Name == startNode.Name + nodeName).Weight;
+                        VisitedNodes.Add(nodeName); // Den mittersta nodens namn i pathen (första och sista finns i InputOutput.UserNodes
+                        return true;
+                    }
                 return false;
         }
 
@@ -100,15 +107,16 @@
         {
             foreach (var nodeName in startNode.Connections) // Kollar alla noder som ligger brevid startnodens connections.
                 foreach (var nodeName2 in RouteCity.Nodes.Find(f => f.Name == nodeName).Connections)
-                    if (nodeName2 == endNode.Name)
-                    {
-                        string edgeName1 = RouteCity.Nodes.First(f => f.Name == nodeName).Name + nodeName2;
-                        string edgeName2 = RouteCity.Nodes.First(f => f.Name == nodeName2).Name + endNode.Name;
+                    foreach (var nodeName3 in RouteCity.Nodes.Find(f => f.Name == nodeName2).Connections)
+                        if (nodeName3 == endNode.Name)
+                        {
+                            string edgeName1 = nodeName + nodeName2;
+                            string edgeName2 = nodeName2 + nodeName3;
 
-                        TotalWeight = RouteCity.Edges.Find(f => f.Name == edgeName1).Weight + RouteCity.Edges.Find(f => f.Name == edgeName2).Weight + RouteCity.Edges.Find(f => f.Name == nodeName + startNode.Name).Weight;
-                        VisitedNodes.Add(nodeName);
-                        VisitedNodes.Add(nodeName2);
-                    }
+                            TotalWeight = RouteCity.Edges.Find(f => f.Name == edgeName1).Weight + RouteCity.Edges.Find(f => f.Name == edgeName2).Weight + RouteCity.Edges.Find(f => f.Name == startNode.Name + nodeName).Weight;
+                            VisitedNodes.Add(nodeName);
+                            VisitedNodes.Add(nodeName2);
+                        }
         }
     }
 }

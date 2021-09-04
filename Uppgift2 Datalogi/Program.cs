@@ -10,10 +10,12 @@
             Seeder.EdgeSeeder();
 
             InputOutput.StartMenu();
+            PathFinder.PathHandler();
+            InputOutput.OutputResult();
 
-            var nodes = Seeder.Data();
-            var view = new PathFinderView(nodes);
-            view.StartMenu();
+            //var nodes = Seeder.Data();
+            //var view = new PathFinderView(nodes);
+            //view.StartMenu();
         }
     }
 }
