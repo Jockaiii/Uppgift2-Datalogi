@@ -6,7 +6,6 @@
     class InputOutput
     {
         public static List<string> UserNodes { get; set; } = new List<string>();
-        public static bool OnlyOneStop { get; set; }
 
         public static void StartMenu()
         {
@@ -25,7 +24,6 @@
                         break;
                     case "2":
                         NodeInputHandler(int.Parse(userInput));
-                        OnlyOneStop = true;
                         break;
                     case "3":
                         break;
@@ -48,9 +46,6 @@
                 } while (!CheckNodeInput(userNode));
 
                 AddUserNode(userNode);
-
-                //if (OnlyOneStop) // om användaren har valt 2 punkter med endast ett delmål
-                //    CheckOnlyOneStop();
             }
         }
 
@@ -60,7 +55,6 @@
             Console.Write("\nInput: ");
             return Console.ReadLine().ToUpper();
         }
-
 
         public static bool CheckNodeInput(string userNode)
         {
@@ -83,25 +77,6 @@
         {
             UserNodes.Add(userNode);
         }
-
-        //public static void CheckOnlyOneStop()
-        //{
-        //    var node1 = RouteCity.Nodes.Where(w => w.Name == UserNodes[0]);
-        //    var node2 = RouteCity.Nodes.Where(w => w.Name == UserNodes[1]);
-
-        //    foreach (var property1 in node1)
-        //        foreach (var property2 in node2)
-        //            foreach (var element1 in property1.Connections)
-        //                foreach (var element2 in property2.Connections)
-        //                {
-        //                    if (element1 == element2)
-        //                    {
-                                
-        //                    }
-        //                }
-        //    Console.WriteLine("Those nodes can not be reached with just one stop");
-        //    UserChoice();
-        //}
 
         public static bool CheckValidNode(string userNode)
         {

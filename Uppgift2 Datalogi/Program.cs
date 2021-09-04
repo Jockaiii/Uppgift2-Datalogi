@@ -1,8 +1,5 @@
-﻿
-namespace Uppgift2_Datalogi
+﻿namespace Uppgift2_Datalogi
 {
-    using System;
-    using System.Collections.Generic;
     using Uppgift2_Datalogi.Views;
 
     class Program
