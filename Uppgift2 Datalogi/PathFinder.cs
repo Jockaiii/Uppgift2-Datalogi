@@ -51,30 +51,59 @@
             throw new NotImplementedException();
         }
 
-        public static int PathHandler()
+        public static List<string> VisitedNodes { get; set; } = new List<string>();
+        public static int TotalWeight { get; set; }
+
+        public static void PathHandler()
         {
             if (InputOutput.UserNodes.Count == 2) // om användaren har valt 2 nodes
             {
                 var startNode = RouteCity.Nodes.First(f => f.Name == InputOutput.UserNodes[0]);
                 var endNode = RouteCity.Nodes.First(f => f.Name == InputOutput.UserNodes[1]);
 
-                if (startNode.Connections.Contains(endNode.Name)) // Om slutnoden ligger brevid startnoden
-                    return RouteCity.Edges.First(f => f.Name == startNode.Name + endNode.Name).Weight; // skickar tillbaka vikten av sträckan
-
-                else  // Om slutnoden inte ligger brevid startnoden
-                {
-                    foreach (var nodeName in startNode.Connections) // Kollar alla noder som ligger brevid startnodens connections.
-                        if (endNode == RouteCity.Nodes.First(f => f.Name == nodeName))
-                        {
-
-                        }
-                }
+                if (!CheckForEndNodeAroundStartNode(startNode, endNode)) // Om slutnoden ligger brevid startnoden
+                    if (!CheckEndNodeFrom2NodesAway(startNode, endNode)) // Om slutnoden inte ligger brevid startnoden
+                        CheckEndNodeFrom3NodesAway(startNode, endNode); // Kollar alla noder som ligger 3 noder ifrån startnoden
             }
             else // om användaren har valt 2 nodes med en mellanlandning
             {
-
+                var startNode = RouteCity.Nodes.First(f => f.Name == InputOutput.UserNodes[0]);
+                var stopNode = RouteCity.Nodes.First(f => f.Name == InputOutput.UserNodes[1]);
+                var endNode = RouteCity.Nodes.First(f => f.Name == InputOutput.UserNodes[2]);
             }
-            return 5;
+        }
+
+        public static bool CheckForEndNodeAroundStartNode(Node startNode, Node endNode)
+        {
+            if (startNode.Connections.Contains(endNode.Name))
+            {
+                TotalWeight = RouteCity.Edges.First(f => f.Name == startNode.Name + endNode.Name).Weight; // skickar tillbaka vikten av sträckan
+                return true;
+            }
+            return false;
+        }
+
+        public static bool CheckEndNodeFrom2NodesAway(Node startNode, Node endNode)
+        {
+            foreach (var nodeName in startNode.Connections) // Kollar alla noder som ligger brevid startnodens connections.
+                if (RouteCity.Nodes.First(f => f.Name == nodeName).Name == endNode.Name)
+                {
+                    string edgeName = RouteCity.Nodes.First(f => f.Name == nodeName).Name + endNode.Name;
+                    TotalWeight = RouteCity.Edges.Find(f => f.Name == edgeName).Weight + RouteCity.Edges.Find(f => f.Name == nodeName + startNode.Name).Weight;
+                    VisitedNodes.Add(nodeName); // Den mittersta nodens namn i pathen (första och sista finns i InputOutput.UserNodes
+                    return true;
+                }
+                return false;
+        }
+
+        public static void CheckEndNodeFrom3NodesAway(Node startNode, Node endNode)
+        {
+            foreach (var nodeName in startNode.Connections) // Kollar alla noder som ligger brevid startnodens connections.
+                foreach (var nodeName2 in RouteCity.Nodes.Find(f => f.Name == nodeName).Connections)
+                    if (nodeName2 == endNode.Name)
+                    {
+
+                    }
         }
     }
 }
