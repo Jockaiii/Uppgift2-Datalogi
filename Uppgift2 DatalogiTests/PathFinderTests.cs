@@ -14,8 +14,7 @@ namespace Uppgift2_Datalogi.Tests
         public void TestInitialize()
         {
             // Setup the node network with seed data.
-            Nodes = new List<Node>();
-            Seeder.Seed(Nodes);
+            Nodes = Seeder.Data();
         }
 
         [TestMethod()]
