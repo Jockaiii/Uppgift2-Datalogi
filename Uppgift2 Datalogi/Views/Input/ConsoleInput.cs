@@ -20,10 +20,10 @@
             Console.WriteLine(" [3] Write network");
             Console.WriteLine(" [E] Exit");
             Console.Write("> ");
-            var input = Console.ReadLine();
+            var input = Console.ReadLine().ToUpper();
             Console.WriteLine();
 
-            return input.ToUpper() switch
+            return input switch
             {
                 "1" => input,
                 "2" => input,
