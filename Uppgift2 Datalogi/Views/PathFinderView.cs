@@ -24,7 +24,7 @@
             var exit = false;
             while (!exit)
             {
-                // Present user with options.
+                // Display menu.
                 switch (ConsoleInput.PromptMenuSelect())
                 {
                     case "1":
@@ -92,13 +92,13 @@
         private void WritePath(List<Node> path)
         {
             var pathStr = string.Empty;
+
             foreach (var node in path)
             {
                 pathStr += $"{node.Name} -> ";
             }
-            pathStr = pathStr.TrimEnd().TrimEnd('>').TrimEnd('-');
 
-            Console.WriteLine(pathStr + "\n");
+            Console.WriteLine(pathStr[0..^4] + "\n");
         }
     }
 }
