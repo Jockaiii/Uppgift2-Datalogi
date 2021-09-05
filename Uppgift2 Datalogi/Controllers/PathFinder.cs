@@ -54,7 +54,7 @@
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         public static List<Models.Path> Paths { get; set; } = new List<Models.Path>();
 
-        public static void PathHandler() // todo: A-J == 20? jämföra flera väger, inte bara ta första. Hantera krasher om användaren inte inputar i alfabetisk ordning
+        public static void PathHandler() // todo: Hantera krasher om användaren inte inputar i alfabetisk ordning
         {                                // Lägg till funktionalitet för att hantera om användaren vill ha ett delmål. Refactoring & optimisering?
             if (InputOutput.UserNodes.Count == 2) // om användaren har valt 2 nodes
             {
@@ -80,7 +80,6 @@
 
             if (Paths.Count > 1)
                 PathChecker();
-            
         }
 
         public static bool CheckForEndNodeFrom1NodeAway(Node startNode, Node endNode)
@@ -114,7 +113,7 @@
 
         public static void CheckEndNodeFrom3NodesAway(Node startNode, Node endNode)
         {
-            foreach (var nodeName in startNode.Connections) // Kollar alla noder som ligger brevid startnodens connections.
+            foreach (var nodeName in startNode.Connections) // Kollar alla noder som ligger brevid startnodens connections Connections.
                 foreach (var nodeName2 in RouteCity.Nodes.Find(f => f.Name == nodeName).Connections)
                     foreach (var nodeName3 in RouteCity.Nodes.Find(f => f.Name == nodeName2).Connections)
                         if (nodeName3 == endNode.Name)
@@ -133,12 +132,7 @@
 
         public static void PathChecker()
         {
-            //foreach (var path in Paths) // Itererar igenom vägarna i Paths och tar bort dom som är längre
-            //    foreach (var path2 in Paths)
-            //        if (path.Weight < path2.Weight)
-            //            Paths.Remove(path2);
-
-            for (int i = 0; i < Paths.Count; i++)
+            for (int i = 0; i < Paths.Count; i++) // Itererar igenom vägarna i Paths och tar bort dom som är längre
                 for (int j = 0; j < Paths.Count; j++)
                     if (Paths[i].Weight < Paths[j].Weight)
                         Paths.RemoveAt(j);

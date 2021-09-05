@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Uppgift2_Datalogi.Models
+﻿namespace Uppgift2_Datalogi.Models
 {
+    using System.Collections.Generic;
     public class Path
     {
         public int Weight { get; set; }
@@ -13,7 +10,7 @@ namespace Uppgift2_Datalogi.Models
         {
             Weight = weight;
         }
-        
+
         public Path(int weight, List<string> visitedNodes)
         {
             Weight = weight;
