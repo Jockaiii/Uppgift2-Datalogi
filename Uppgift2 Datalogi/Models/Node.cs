@@ -4,11 +4,11 @@
 
     public class Node
     {
-        public string Name { get; set; }
-        public List<string> Connections { get; set; }
+        public string Name { get; set; } // Namnet på nod/busshållplatsen.
+        public List<string> Connections { get; set; } // lista med noder som ligger kopplade med noden.
         public List<(Node node, int weight)> Edges { get; set; } = new List<(Node, int)>();
 
-        public Node(string name, List<string> connections)
+        public Node(string name, List<string> connections) // constructor för noder.
         {
             Name = name;
             Connections = connections;

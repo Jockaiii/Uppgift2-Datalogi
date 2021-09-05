@@ -5,10 +5,12 @@
 
     class InputOutput
     {
-        public static List<string> UserNodes { get; set; } = new List<string>();
+        public static List<string> UserNodes { get; set; } = new List<string>(); // public Lista som lagrar användarens val av noder i form av namn.
+        public static bool ReverseResultOutput { get; set; } // public bool som håller koll ifall användaren har anget sträckan i alfabetisk ordning eller inte.
 
-        public static bool ReverseResultOutput { get; set; }
-
+        /// <summary>
+        /// Metod som agerar som en startmeny för användaren. Tar emot och tillkallar metoder för att kontrollera input. Och tillkallar eventuellt nödvändiga metoder.
+        /// </summary>
         public static void StartMenu()
         {
             string userInput;
@@ -36,6 +38,11 @@
                 }
             } while (!int.TryParse(userInput, out _) && userInput.Length > 0 && userInput.Length < 4);
         }
+
+        /// <summary>
+        /// Metod som hanterar/tillkallar allt som har med noderna att göra. Från inläsning till kontrollering av godkänt input eller ej.
+        /// </summary>
+        /// <param name="userInput">Användarens input</param>
         public static void NodeInputHandler(int userInput)
         {
             string userNode;
@@ -51,6 +58,11 @@
             }
         }
 
+        /// <summary>
+        /// Metod som ber om och läser in användarens input.
+        /// </summary>
+        /// <param name="currentNode">siffran på den nuvarande noden som användaren anger.</param>
+        /// <returns>retunerar användarens input</returns>
         public static string InputNode(int currentNode)
         {
             Console.WriteLine($"Please choose node {currentNode + 1}");
@@ -58,6 +70,11 @@
             return Console.ReadLine().ToUpper();
         }
 
+        /// <summary>
+        /// Metod som kontrollerar ifall användarens input är giltlig eller ej. samt meddelar användaren om utfallet.
+        /// </summary>
+        /// <param name="userNode"></param>
+        /// <returns></returns>
         public static bool CheckNodeInput(string userNode)
         {
             if (CheckValidNode(userNode) && !UserNodes.Contains(userNode))
@@ -75,11 +92,20 @@
             }
         }
 
+        /// <summary>
+        /// Metod som lägger till godkänd input i List<string>UserNodes
+        /// </summary>
+        /// <param name="userNode">användarens godkända input</param>
         public static void AddUserNode(string userNode)
         {
             UserNodes.Add(userNode);
         }
 
+        /// <summary>
+        /// Metod som kontrollerar att inputen användaren angivit är en existerande nod i busshållplats systemet.
+        /// </summary>
+        /// <param name="userNode">Den nuvarande bolen som användaren inputat</param>
+        /// <returns>True eller false beronde på ifall noden existerar eller inte</returns>
         public static bool CheckValidNode(string userNode)
         {
             foreach (var node in RouteCity.Nodes)
@@ -88,7 +114,10 @@
             return false;
         }
 
-        public static void OutputResult() // todo: a-j skriver inte ut något om else > else if (VisitedNodes.Count == 2)?
+        /// <summary>
+        /// Metod som hanterar och skriver ut till användaren om den kortaste vägen som algoritmen hittade.
+        /// </summary>
+        public static void OutputResult()
         {
             if (!ReverseResultOutput) // Om algoritmen hittade en väg utan att sortera UserNodes
             {

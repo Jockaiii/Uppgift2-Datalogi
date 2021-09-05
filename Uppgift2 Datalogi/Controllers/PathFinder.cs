@@ -58,7 +58,7 @@
         {                                // Lägg till funktionalitet för att hantera om användaren vill ha ett delmål. Refactoring & optimisering?
             if (InputOutput.UserNodes.Count == 2) // om användaren har valt 2 nodes
             {
-                var startNode = RouteCity.Nodes.First(f => f.Name == InputOutput.UserNodes[0]);
+                var startNode = RouteCity.Nodes.First(f => f.Name == InputOutput.UserNodes[0]); // Objekt som representerar start och slutnoderna som användaren anget.
                 var endNode = RouteCity.Nodes.First(f => f.Name == InputOutput.UserNodes[1]);
 
                 if (!CheckForEndNodeFrom1NodeAway(startNode, endNode)) // Om slutnoden ligger brevid startnoden
@@ -78,21 +78,33 @@
                 PathHandler(); // rekurserar PathHandler() med den nya ordningen av UserNodes
             }
 
-            if (Paths.Count > 1)
+            if (Paths.Count > 1) // Om algoritmen funnit mer än 1 väg till slutnoden.
                 PathChecker();
         }
 
+        /// <summary>
+        /// Metod som söker efter slutnoden runtom startnoden. Samt lägger till eventuellt funnen väg i List<Path> Paths
+        /// </summary>
+        /// <param name="startNode">Objekt som representerar startnoden som användren har valt</param>
+        /// <param name="endNode">Objekt som representerar slutnoden som användaren har valt</param>
+        /// <returns></returns>
         public static bool CheckForEndNodeFrom1NodeAway(Node startNode, Node endNode)
         {
-            if (startNode.Connections.Contains(endNode.Name))
+            if (startNode.Connections.Contains(endNode.Name)) // Kollar noderna runtom startnoden.
             {
-                int totalWeight = RouteCity.Edges.First(f => f.Name == startNode.Name + endNode.Name).Weight; // skickar tillbaka vikten av sträckan
-                Paths.Add(new Models.Path(totalWeight));
-                return true;
+                int totalWeight = RouteCity.Edges.First(f => f.Name == startNode.Name + endNode.Name).Weight; // Lägger ihop sträckorna till slutnoden
+                Paths.Add(new Models.Path(totalWeight)); // Lägger till en ny Path() i List<Path> Paths
+                return true; // Retunerar true så att algoritmen inte fortsätter att leta efter slutnod längre bort.
             }
-            return false;
+            return false; // Retunerar false om metoden inte fann någon path till slutnoden så att algoritmen kan fortsätta leta efter slutnoden längre bort
         }
 
+        /// <summary>
+        /// Metod som söker efter slutnoden 3 noder bort från startnoden. Samt lägger till eventuellt funnen väg i List<Paths> Path
+        /// </summary>
+        /// <param name="startNode">Objekt som representerar startnoden som användren har valt</param>
+        /// <param name="endNode">Objekt som representerar slutnoden som användaren har valt</param>
+        /// <returns></returns>
         public static bool CheckEndNodeFrom2NodesAway(Node startNode, Node endNode)
         {
             foreach (var nodeName in startNode.Connections) // Kollar alla noder som ligger brevid startnodens connections.
@@ -111,6 +123,11 @@
                 return false;
         }
 
+        /// <summary>
+        /// Metod som söker efter slutnoden 3 noder bort från startnoden. Samt lägger till eventuellt funnen väg i List<Path> Paths
+        /// </summary>
+        /// <param name="startNode">Objekt som representerar startnoden som användren har valt</param>
+        /// <param name="endNode">Objekt som representerar slutnoden som användaren har valt</param>
         public static void CheckEndNodeFrom3NodesAway(Node startNode, Node endNode)
         {
             foreach (var nodeName in startNode.Connections) // Kollar alla noder som ligger brevid startnodens connections Connections.
@@ -130,9 +147,12 @@
                         }
         }
 
+        /// <summary>
+        /// Metod som itererar igenom List<Path> Paths och jämför sträckorna mellan de olika vägarna som funnits. Och tar bort alla förutom den kortaste sträckan.
+        /// </summary>
         public static void PathChecker()
         {
-            for (int i = 0; i < Paths.Count; i++) // Itererar igenom vägarna i Paths och tar bort dom som är längre
+            for (int i = 0; i < Paths.Count; i++)
                 for (int j = 0; j < Paths.Count; j++)
                     if (Paths[i].Weight < Paths[j].Weight)
                         Paths.RemoveAt(j);

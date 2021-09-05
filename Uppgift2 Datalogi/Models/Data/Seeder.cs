@@ -4,7 +4,7 @@
 
     static public class Seeder
     {
-        public static List<(string nodeName, List<string> connections)> nodeSeedList = new List<(string, List<string> connections)>
+        public static List<(string nodeName, List<string> connections)> nodeSeedList = new List<(string, List<string> connections)> // Lista med alla kanterna som finns i busshållplatssystemet smat deras egenskaper.
         {
             { ("A", new List<string> {"B", "C", "E" }) },
             { ("B", new List<string> {"A", "C", "D", "H" }) },
@@ -18,7 +18,7 @@
             { ("J", new List<string> {"G", "H", "J" }) },
         };
 
-        public static List<(string name, int weight)> edgeSeedList = new List<(string, int)>
+        public static List<(string name, int weight)> edgeSeedList = new List<(string, int)> // Lista med alla kanterna som finns i busshållplatssytemet samt deras egenskaper
         {
             { ("AB", 4) },
             { ("AC", 7) },
@@ -40,12 +40,18 @@
             { ("IJ", 7) },
         };
 
+        /// <summary>
+        /// Metod som tillkallar överför noderna i busshållplatssytemet till instansen av programet.
+        /// </summary>
         public static void NodeSeeder()
         {
             foreach (var (nodeName, connections) in nodeSeedList)
                 RouteCity.Nodes.Add(new Node(nodeName, connections));
         }
 
+        /// <summary>
+        /// Metod som tillkallar överför kanterna i busshållplatssytemet till instansen av programet.
+        /// </summary>
         public static void EdgeSeeder()
         {
             foreach (var (name, weight) in edgeSeedList)
