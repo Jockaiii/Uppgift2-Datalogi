@@ -51,11 +51,11 @@
             throw new NotImplementedException();
         }
 
-        public static List<string> VisitedNodes { get; set; } = new List<string>();
-        public static int TotalWeight { get; set; }
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        public static List<Models.Path> Paths { get; set; } = new List<Models.Path>();
 
-        public static void PathHandler()
-        {
+        public static void PathHandler() // todo: A-J == 20? jämföra flera väger, inte bara ta första. Hantera krasher om användaren inte inputar i alfabetisk ordning
+        {                                // Lägg till funktionalitet för att hantera om användaren vill ha ett delmål. Refactoring & optimisering?
             if (InputOutput.UserNodes.Count == 2) // om användaren har valt 2 nodes
             {
                 var startNode = RouteCity.Nodes.First(f => f.Name == InputOutput.UserNodes[0]);
@@ -77,13 +77,18 @@
                 InputOutput.ReverseResultOutput = true;
                 PathHandler(); // rekurserar PathHandler() med den nya ordningen av UserNodes
             }
+
+            if (Paths.Count > 1)
+                PathChecker();
+            
         }
 
         public static bool CheckForEndNodeFrom1NodeAway(Node startNode, Node endNode)
         {
             if (startNode.Connections.Contains(endNode.Name))
             {
-                TotalWeight = RouteCity.Edges.First(f => f.Name == startNode.Name + endNode.Name).Weight; // skickar tillbaka vikten av sträckan
+                int totalWeight = RouteCity.Edges.First(f => f.Name == startNode.Name + endNode.Name).Weight; // skickar tillbaka vikten av sträckan
+                Paths.Add(new Models.Path(totalWeight));
                 return true;
             }
             return false;
@@ -95,9 +100,13 @@
                 foreach (var nodeName2 in RouteCity.Nodes.Find(f => f.Name == nodeName).Connections)
                     if (nodeName2 == endNode.Name)
                     {
+                        List<string> visitedNodes = new List<string>();
                         string edgeName = nodeName + nodeName2;
-                        TotalWeight = RouteCity.Edges.Find(f => f.Name == edgeName).Weight + RouteCity.Edges.Find(f => f.Name == startNode.Name + nodeName).Weight;
-                        VisitedNodes.Add(nodeName); // Den mittersta nodens namn i pathen (första och sista finns i InputOutput.UserNodes
+
+                        int totalWeight = RouteCity.Edges.Find(f => f.Name == edgeName).Weight + RouteCity.Edges.Find(f => f.Name == startNode.Name + nodeName).Weight;
+                        visitedNodes.Add(nodeName); // Den mittersta nodens namn i pathen (första och sista finns i InputOutput.UserNodes
+
+                        Paths.Add(new Models.Path(totalWeight, visitedNodes));
                         return true;
                     }
                 return false;
@@ -110,13 +119,29 @@
                     foreach (var nodeName3 in RouteCity.Nodes.Find(f => f.Name == nodeName2).Connections)
                         if (nodeName3 == endNode.Name)
                         {
+                            List<string> visitedNodes = new List<string>();
                             string edgeName1 = nodeName + nodeName2;
                             string edgeName2 = nodeName2 + nodeName3;
 
-                            TotalWeight = RouteCity.Edges.Find(f => f.Name == edgeName1).Weight + RouteCity.Edges.Find(f => f.Name == edgeName2).Weight + RouteCity.Edges.Find(f => f.Name == startNode.Name + nodeName).Weight;
-                            VisitedNodes.Add(nodeName);
-                            VisitedNodes.Add(nodeName2);
+                            int totalWeight = RouteCity.Edges.Find(f => f.Name == edgeName1).Weight + RouteCity.Edges.Find(f => f.Name == edgeName2).Weight + RouteCity.Edges.Find(f => f.Name == startNode.Name + nodeName).Weight;
+                            visitedNodes.Add(nodeName);
+                            visitedNodes.Add(nodeName2);
+
+                            Paths.Add(new Models.Path(totalWeight, visitedNodes));
                         }
+        }
+
+        public static void PathChecker()
+        {
+            //foreach (var path in Paths) // Itererar igenom vägarna i Paths och tar bort dom som är längre
+            //    foreach (var path2 in Paths)
+            //        if (path.Weight < path2.Weight)
+            //            Paths.Remove(path2);
+
+            for (int i = 0; i < Paths.Count; i++)
+                for (int j = 0; j < Paths.Count; j++)
+                    if (Paths[i].Weight < Paths[j].Weight)
+                        Paths.RemoveAt(j);
         }
     }
 }

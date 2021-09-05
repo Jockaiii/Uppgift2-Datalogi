@@ -88,33 +88,32 @@
             return false;
         }
 
-        public static void OutputResult()
+        public static void OutputResult() // todo: a-j skriver inte ut något om else > else if (VisitedNodes.Count == 2)?
         {
             if (!ReverseResultOutput) // Om algoritmen hittade en väg utan att sortera UserNodes
             {
-                if (PathFinder.VisitedNodes.Count > 0)
+                if (PathFinder.Paths.Count > 0)
                 {
-                    if (PathFinder.VisitedNodes.Count == 1)
-                        Console.WriteLine($"The shortest route between {UserNodes[0]} and {UserNodes[1]} is {PathFinder.TotalWeight}km with the path: {UserNodes[0]}-{PathFinder.VisitedNodes[0]}-{UserNodes[1]}");
+                    if (PathFinder.Paths.Count == 1)
+                        Console.WriteLine($"The shortest route between {UserNodes[0]} and {UserNodes[1]} is {PathFinder.Paths[0].Weight}km with the path: {UserNodes[0]}-{PathFinder.Paths[0].VisitedNodes[0]}-{UserNodes[1]}");
                     else
-                        Console.WriteLine($"The shortest route between {UserNodes[0]} and {UserNodes[1]} is {PathFinder.TotalWeight}km with the path: {UserNodes[0]}-{PathFinder.VisitedNodes[0]}-{PathFinder.VisitedNodes[1]}-{UserNodes[1]}");
+                        Console.WriteLine($"The shortest route between {UserNodes[0]} and {UserNodes[1]} is {PathFinder.Paths[0].Weight}km with the path: {UserNodes[0]}-{PathFinder.Paths[0].VisitedNodes[0]}-{PathFinder.Paths[0].VisitedNodes[1]}-{UserNodes[1]}");
                 }
                 else
-                    Console.WriteLine($"The shortest route between {UserNodes[0]} and {UserNodes[1]} is {PathFinder.TotalWeight}km");
+                    Console.WriteLine($"The shortest route between {UserNodes[0]} and {UserNodes[1]} is {PathFinder.Paths[0].Weight}km");
             }
             else
             {
-                if (PathFinder.VisitedNodes.Count > 0)
+                if (PathFinder.Paths.Count > 0)
                 {
-                    if (PathFinder.VisitedNodes.Count == 1)
-                        Console.WriteLine($"The shortest route between {UserNodes[1]} and {UserNodes[0]} is {PathFinder.TotalWeight}km with the path: {UserNodes[1]}-{PathFinder.VisitedNodes[0]}-{UserNodes[0]}");
-                    else if (PathFinder.VisitedNodes.Count == 2)
-                        Console.WriteLine($"The shortest route between {UserNodes[1]} and {UserNodes[0]} is {PathFinder.TotalWeight}km with the path: {UserNodes[1]}-{PathFinder.VisitedNodes[1]}-{PathFinder.VisitedNodes[0]}-{UserNodes[0]}");
+                    if (PathFinder.Paths.Count == 1)
+                        Console.WriteLine($"The shortest route between {UserNodes[1]} and {UserNodes[0]} is {PathFinder.Paths[0].Weight}km with the path: {UserNodes[1]}-{PathFinder.Paths[0].VisitedNodes[0]}-{UserNodes[0]}");
+                    else if (PathFinder.Paths.Count == 2)
+                        Console.WriteLine($"The shortest route between {UserNodes[1]} and {UserNodes[0]} is {PathFinder.Paths[0].Weight}km with the path: {UserNodes[1]}-{PathFinder.Paths[0].VisitedNodes[1]}-{PathFinder.Paths[0].VisitedNodes[0]}-{UserNodes[0]}");
                 }
                 else
-                    Console.WriteLine($"The shortest route between {UserNodes[1]} and {UserNodes[0]} is {PathFinder.TotalWeight}km");
+                    Console.WriteLine($"The shortest route between {UserNodes[1]} and {UserNodes[0]} is {PathFinder.Paths[0].Weight}km");
             }
-            
         }
     }
 }
