@@ -1,13 +1,15 @@
-﻿namespace Uppgift2_Datalogi
+﻿using System.Collections.Generic;
+
+namespace Uppgift2_Datalogi
 {
     class Edge
     {
-        public string Name; // namnet på kanten (Ex AB mellan nod A och B)
+        public List<string> Connections { get; set; } = new List<string>(); // Noderna som kanten ligger mellan.
         public int Weight; // sträckan på kanten
 
-        public Edge(string name, int weight) // constuctor för kanter.
+        public Edge(List<string> connections/*string name*/, int weight) // constuctor för kanter.
         {
-            Name = name;
+            Connections = connections;
             Weight = weight;
         }
     }
