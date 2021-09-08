@@ -19,6 +19,7 @@
             return (visited, cost, found);
         }
 
+        // TODO: compare paths to find shortest
         private static (List<Node> visited, int cost, bool found) FindPath(Node current, Node end, int cost, (List<Node> visited, int cost, bool found) path)
         {
             if (current.Name == end.Name)
@@ -27,31 +28,45 @@
                 path.found = true;
                 return path;
             }
+
+            #region TODO: how compare paths?
+            //int[] pathCosts = new int[current.Edges.Count];
+
+            //for (int i = 0; i < current.Edges.Count; i++)
+            //{
+            //    if (path.cost > previousCost)
+            //    {
+            //        path.visited.Remove(current.Edges[i].Node);
+            //        path.cost -= current.Edges[i].Weight;
+            //    }
+            //    pathCosts[i] = path.cost;
+            //}
+            #endregion
+
             foreach (var edge in current.Edges)
             {
-                // TODO: compare paths to find shortest
+                var previousCost = path.cost + edge.Weight;
 
                 // Don't visit a node twice.
-                if (!path.visited.Contains(edge.node))
+                if (!path.visited.Contains(edge.Node))
                 {
-                    // Add node and cost to path, and move in to node.
-                    path.visited.Add(edge.node);
-                    path.cost += edge.weight;
-                    
-                    var previousCost = path.cost;
-
-                    FindPath(edge.node, end, edge.weight, path);
-
-                    
-
-                    return FindPath(edge.node, end, edge.weight, path);
+                    // Add node and cost to path...
+                    path.visited.Add(edge.Node);
+                    path.cost += edge.Weight;
+                    // ...and move in to node.
+                    FindPath(edge.Node, end, edge.Weight, path);
                 }
 
-                //if (path.cost > previousCost)
-                //{
-                //    path.visited.Remove(edge.node);
-                //    path.cost -= edge.weight;
-                //}
+                // if current paths cost is <= ???
+                if (path.cost <= previousCost)
+                {
+                    return path;
+                }
+
+                // TODO: dont remove`yet?
+                path.visited.Remove(edge.Node);
+                path.cost -= edge.Weight;
+                return path;
             }
 
             // Dead end, remove edge from path and return.
@@ -123,7 +138,9 @@
                     if (nodeName2 == endNode.Name)
                     {
                         List<string> visitedNodes = new List<string>();
-                        int totalWeight = RouteCity.Edges.Find(f => f.Connections.Contains(nodeName) && f.Connections.Contains(nodeName2)).Weight + RouteCity.Edges.Find(f => f.Connections.Contains(startNode.Name) && f.Connections.Contains(nodeName)).Weight;
+                        int totalWeight = 
+                            RouteCity.Edges.Find(f => f.Connections.Contains(nodeName) && f.Connections.Contains(nodeName2)).Weight + 
+                            RouteCity.Edges.Find(f => f.Connections.Contains(startNode.Name) && f.Connections.Contains(nodeName)).Weight;
                         visitedNodes.Add(nodeName); // Den mittersta nodens namn i pathen (första och sista finns i InputOutput.UserNodes
 
                         Paths.Add(new Models.Path(totalWeight, visitedNodes));
@@ -150,7 +167,7 @@
                             visitedNodes.Add(nodeName);
                             visitedNodes.Add(nodeName2);
 
-                            Paths.Add(new Models.Path(totalWeight, visitedNodes));
+                            Paths.Add(new Path(totalWeight, visitedNodes));
                         }
         }
 
@@ -165,28 +182,28 @@
                         Paths.RemoveAt(j);
         }
 
-        //public static List<string> visitedNodes2 { get; set; } = new List<string>();
-        //public static int Count { get; set; } = -1;
-        //public static int TotalWeight2 { get; set; } = 0;
-        //public static void PathFinders(Node startNode, Node endNode) // rekursions version av algortimen.
-        //{
-        //    foreach (var nodeName in startNode.Connections)
-        //        if (nodeName == endNode.Name)
-        //        {
-        //            TotalWeight2 += RouteCity.Edges.Find(f => f.Connections.Contains(startNode.Name) && f.Connections.Contains(endNode.Name)).Weight;
-        //            visitedNodes2.Add(nodeName);
+        public static List<string> visitedNodes2 { get; set; } = new List<string>();
+        public static int Count { get; set; } = -1;
+        public static int TotalWeight2 { get; set; } = 0;
+        public static void PathFinders(Node startNode, Node endNode) // rekursions version av algortimen.
+        {
+            foreach (var nodeName in startNode.Connections)
+                if (nodeName == endNode.Name)
+                {
+                    TotalWeight2 += RouteCity.Edges.Find(f => f.Connections.Contains(startNode.Name) && f.Connections.Contains(endNode.Name)).Weight;
+                    visitedNodes2.Add(nodeName);
 
-        //            Paths.Add(new Models.Path(TotalWeight2, visitedNodes2));
-        //            Count = 0;
-        //            TotalWeight2 = 0;
-        //        }
-        //    foreach (var nodeName2 in startNode.Connections)
-        //    {
-        //        PathFinders(RouteCity.Nodes.Find(f => f.Name == nodeName2), endNode);
-        //    }
-        //    TotalWeight2 += RouteCity.Edges.Find(f => f.Connections.Contains(startNode.Name) && f.Connections.Contains(startNode.Connections[0])).Weight;
-        //    visitedNodes2.Add(startNode.Name);
-        //    PathFinders(RouteCity.Nodes.Find(f => f.Name == startNode.Connections[Count++]), endNode);
-        //}
+                    Paths.Add(new Models.Path(TotalWeight2, visitedNodes2));
+                    Count = 0;
+                    TotalWeight2 = 0;
+                }
+            foreach (var nodeName2 in startNode.Connections)
+            {
+                PathFinders(RouteCity.Nodes.Find(f => f.Name == nodeName2), endNode);
+            }
+            TotalWeight2 += RouteCity.Edges.Find(f => f.Connections.Contains(startNode.Name) && f.Connections.Contains(startNode.Connections[0])).Weight;
+            visitedNodes2.Add(startNode.Name);
+            PathFinders(RouteCity.Nodes.Find(f => f.Name == startNode.Connections[Count++]), endNode);
+        }
     }
 }
