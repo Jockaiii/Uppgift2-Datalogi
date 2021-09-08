@@ -18,26 +18,26 @@
             { ("J", new List<string> {"G", "H", "J" }) },
         };
 
-        public static List<(string name, int weight)> edgeSeedList = new List<(string, int)> // Lista med alla kanterna som finns i busshållplatssytemet samt deras egenskaper
+        public static List<(List<string> connections, int weight)> edgeSeedList = new List<(List<string>, int)> // Lista med alla kanterna som finns i busshållplatssytemet samt deras egenskaper
         {
-            { ("AB", 4) },
-            { ("AC", 7) },
-            { ("AE", 7) },
-            { ("BC", 3) },
-            { ("BH", 5) },
-            { ("BD", 12) },
-            { ("CI", 12) },
-            { ("CG", 4) },
-            { ("DH", 7) },
-            { ("DI", 3) },
-            { ("EG", 5) },
-            { ("EF", 3) },
-            { ("FG", 5) },
-            { ("GI", 13) },
-            { ("GJ", 8) },
-            { ("GH", 8) },
-            { ("HJ", 9) },
-            { ("IJ", 7) },
+            { (new List<string>{"A","B"}, 4) },
+            { (new List<string>{"A","C"}, 7) },
+            { (new List<string>{"A","E"}, 7) },
+            { (new List<string>{"B","C"}, 3) },
+            { (new List<string>{"B","H"}, 5) },
+            { (new List<string>{"B","D"}, 12) },
+            { (new List<string>{"C","I"}, 12) },
+            { (new List<string>{"C","G"}, 4) },
+            { (new List<string>{"D","H"}, 7) },
+            { (new List<string>{"D","I"}, 3) },
+            { (new List<string>{"E","G"}, 5) },
+            { (new List<string>{"E","F"}, 3) },
+            { (new List<string>{"F","G"}, 5) },
+            { (new List<string>{"G","I"}, 13) },
+            { (new List<string>{"G","J"}, 8) },
+            { (new List<string>{"G","H"}, 8) },
+            { (new List<string>{"H","J"}, 9) },
+            { (new List<string>{"I","J" }, 7) },
         };
 
         /// <summary>
@@ -50,12 +50,12 @@
         }
 
         /// <summary>
-        /// Metod som tillkallar överför kanterna i busshållplatssytemet till instansen av programet.
+        /// Metod som överför kanterna i busshållplatssytemet till instansen av programet.
         /// </summary>
         public static void EdgeSeeder()
         {
-            foreach (var (name, weight) in edgeSeedList)
-                RouteCity.Edges.Add(new Edge(name, weight));
+            foreach (var (connections, weight) in edgeSeedList)
+                RouteCity.Edges.Add(new Edge(connections, weight));
         }
 
         /// <summary>
