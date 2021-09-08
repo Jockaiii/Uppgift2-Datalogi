@@ -6,16 +6,16 @@
     {
         static void Main()
         {
-            Seeder.NodeSeeder();
-            Seeder.EdgeSeeder();
+            //Seeder.NodeSeeder();
+            //Seeder.EdgeSeeder();
 
-            InputOutput.StartMenu();
-            PathFinder.PathHandler();
-            InputOutput.OutputResult();
+            //InputOutput.StartMenu();
+            //PathFinder.PathHandler();
+            //InputOutput.OutputResult();
 
-            //var nodes = Seeder.Data();
-            //var view = new PathFinderView(nodes);
-            //view.StartMenu();
+            var nodes = Seeder.Data();
+            var view = new PathFinderView(nodes);
+            view.StartMenu();
         }
     }
 }

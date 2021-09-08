@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Models;
 
     public static class PathFinder
     {
@@ -28,19 +29,32 @@
             }
             foreach (var edge in current.Edges)
             {
-                // TODO: 
+                // TODO: compare paths to find shortest
 
+                // Don't visit a node twice.
                 if (!path.visited.Contains(edge.node))
                 {
                     // Add node and cost to path, and move in to node.
                     path.visited.Add(edge.node);
                     path.cost += edge.weight;
-                    return FindPath(edge.node, end, edge.weight, path); // TODO: turnary on path.found possible?
+                    
+                    var previousCost = path.cost;
+
+                    FindPath(edge.node, end, edge.weight, path);
+
+                    
+
+                    return FindPath(edge.node, end, edge.weight, path);
                 }
+
+                //if (path.cost > previousCost)
+                //{
+                //    path.visited.Remove(edge.node);
+                //    path.cost -= edge.weight;
+                //}
             }
 
-            // Dead end.
-            // Remove edge from path and return.
+            // Dead end, remove edge from path and return.
             path.visited.RemoveAt(path.visited.Count - 1);
             path.cost -= cost;
             return path;

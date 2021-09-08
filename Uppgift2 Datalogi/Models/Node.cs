@@ -19,6 +19,10 @@
             Name = name;
         }
 
+        /// <summary>
+        ///Name of node and names and weights of all connected nodes.
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             var nodeToString = $"{Name}:";
