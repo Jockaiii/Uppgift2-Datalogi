@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
 
-    class InputOutput
+    static class InputOutput
     {
         public static List<string> UserNodes { get; set; } = new List<string>(); // public Lista som lagrar användarens val av noder i form av namn.
 

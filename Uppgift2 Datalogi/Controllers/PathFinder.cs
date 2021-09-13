@@ -193,18 +193,18 @@
         public static List<Models.Path> Paths { get; set; } = new List<Models.Path>();
 
         public static void PathHandler() // todo: Lägg till funktionalitet för att hantera om användaren vill ha ett delmål. Refactoring & optimisering?
-        {
+        {                                // Lägg till rekursivitet
             if (InputOutput.UserNodes.Count == 2) // om användaren har valt 2 nodes
             {
                 var startNode = RouteCity.Nodes.First(f => f.Name == InputOutput.UserNodes[0]); // Objekt som representerar start och slutnoderna som användaren anget.
                 var endNode = RouteCity.Nodes.First(f => f.Name == InputOutput.UserNodes[1]);
 
-                if (!CheckForEndNodeFrom1NodeAway(startNode, endNode)) // Om slutnoden ligger brevid startnoden
-                    if (!CheckEndNodeFrom2NodesAway(startNode, endNode)) // Om slutnoden inte ligger brevid startnoden
-                        CheckEndNodeFrom3NodesAway(startNode, endNode); // Kollar alla noder som ligger 3 noder ifrån startnoden
+                //if (!CheckForEndNodeFrom1NodeAway(startNode, endNode)) // Om slutnoden ligger brevid startnoden
+                //    if (!CheckEndNodeFrom2NodesAway(startNode, endNode)) // Om slutnoden inte ligger brevid startnoden
+                //        CheckEndNodeFrom3NodesAway(startNode, endNode); // Kollar alla noder som ligger 3 noder ifrån startnoden
 
-                //if (!CheckForEndNodeFrom1NodeAway(startNode, endNode))
-                //    PathFinders(startNode, endNode);
+                if (!CheckForEndNodeFrom1NodeAway(startNode, endNode))
+                    PathFinder2(startNode, startNode, endNode);
             }
             else// om användaren har valt 2 nodes med en mellanlandning
             {
@@ -247,12 +247,12 @@
                     if (nodeName2 == endNode.Name)
                     {
                         List<string> visitedNodes = new List<string>();
-                        int totalWeight = 
-                            RouteCity.Edges.Find(f => f.Connections.Contains(nodeName) && f.Connections.Contains(nodeName2)).Weight + 
+                        int totalWeight =
+                            RouteCity.Edges.Find(f => f.Connections.Contains(nodeName) && f.Connections.Contains(nodeName2)).Weight +
                             RouteCity.Edges.Find(f => f.Connections.Contains(startNode.Name) && f.Connections.Contains(nodeName)).Weight;
                         visitedNodes.Add(nodeName); // Den mittersta nodens namn i pathen (första och sista finns i InputOutput.UserNodes
 
-                        Paths.Add(new Models.Path(totalWeight, visitedNodes));
+                        Paths.Add(new Path(totalWeight, visitedNodes));
                         return true;
                     }
             return false;
@@ -291,28 +291,41 @@
                         Paths.RemoveAt(j);
         }
 
-        public static List<string> visitedNodes2 { get; set; } = new List<string>();
+        public static List<string> VisitedNodes2 { get; set; } = new List<string>();
         public static int Count { get; set; } = -1;
-        public static int TotalWeight2 { get; set; } = 0;
-        public static void PathFinders(Node startNode, Node endNode) // rekursions version av algortimen.
+        public static int TotalWeight2 { get; set; }
+        public static void PathFinder2(Node startNode, Node currentNode, Node endNode) // rekursions version av algortimen.
         {
-            foreach (var nodeName in startNode.Connections)
+            Count++;
+            foreach (var nodeName in currentNode.Connections)
                 if (nodeName == endNode.Name)
                 {
-                    TotalWeight2 += RouteCity.Edges.Find(f => f.Connections.Contains(startNode.Name) && f.Connections.Contains(endNode.Name)).Weight;
-                    visitedNodes2.Add(nodeName);
+                    TotalWeight2 += RouteCity.Edges.Find(f => f.Connections.Contains(currentNode.Name) && f.Connections.Contains(endNode.Name)).Weight;
+                    VisitedNodes2.Add(nodeName);
 
-                    Paths.Add(new Models.Path(TotalWeight2, visitedNodes2));
-                    Count = 0;
+                    Paths.Add(new Path(TotalWeight2, VisitedNodes2));
+                    VisitedNodes2.Clear();
                     TotalWeight2 = 0;
                 }
-            foreach (var nodeName2 in startNode.Connections)
+
+            if (Count <= currentNode.Connections.Count - 1) // Rekurserar genom alla currentNodes connections. OBS Fortsätter med en ny nod connections hela tiden.
+                PathFinder2(startNode, RouteCity.Nodes.Find(f => f.Name == currentNode.Connections[Count]), endNode);
+            else
             {
-                PathFinders(RouteCity.Nodes.Find(f => f.Name == nodeName2), endNode);
+                Count = -1;
+                for (int i = 0; i < currentNode.Connections.Count; i++) // rekuserar Pathfinder med noder ett steg längre bort (vars connections rekurserars ovan)
+                {
+                    if (i > 1)
+                    {
+                        TotalWeight2 -= RouteCity.Edges[i - 1].Weight;
+                        VisitedNodes2.RemoveAt(VisitedNodes2.Count - 1);
+                    }
+                    Node nextNode = RouteCity.Nodes.Find(f => f.Connections.Contains(currentNode.Connections[i]));
+                    TotalWeight2 += RouteCity.Edges.Find(f => f.Connections.Contains(nextNode.Name)).Weight;
+                    VisitedNodes2.Add(nextNode.Name);
+                    PathFinder2(startNode, nextNode, endNode);
+                }
             }
-            TotalWeight2 += RouteCity.Edges.Find(f => f.Connections.Contains(startNode.Name) && f.Connections.Contains(startNode.Connections[0])).Weight;
-            visitedNodes2.Add(startNode.Name);
-            PathFinders(RouteCity.Nodes.Find(f => f.Name == startNode.Connections[Count++]), endNode);
         }
     }
 }
