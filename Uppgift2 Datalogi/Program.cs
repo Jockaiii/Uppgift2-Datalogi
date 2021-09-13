@@ -2,9 +2,9 @@
 {
     using Uppgift2_Datalogi.Views;
 
-    class Program
+    internal static class Program
     {
-        static void Main()
+        private static void Main()
         {
             //Seeder.NodeSeeder();
             //Seeder.EdgeSeeder();
@@ -14,8 +14,16 @@
             //InputOutput.OutputResult();
 
             var nodes = Seeder.Data();
-            var view = new PathFinderView(nodes);
-            view.StartMenu();
+            var start = nodes.Find(n => n.Name == "A");
+            var   end = nodes.Find(n => n.Name == "J");
+
+            //var dijkstras = PathFinder.DijkstrasCosts(start, end);
+
+            var shortestPath = PathFinder.DijkstrasShortestPath(start, end);
+
+            // TODO: can find path, but not shortest
+            //var view = new PathFinderView(nodes);
+            //view.StartMenu();
         }
     }
 }

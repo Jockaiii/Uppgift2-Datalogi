@@ -7,20 +7,39 @@
 
     public static class PathFinder
     {
+        // TODO: compare paths to find shortest
         public static (List<Node> visited, int cost, bool found) ShortestPath(Node start, Node end)
         {
-            var paths = new List<(List<Node> visited, int cost, bool found)>();
-
-            // TODO: out of all possible paths which is fastest?
-
             // Get a path...
             var (visited, cost, found) = FindPath(start, end, 0, (new List<Node>() { start }, 0, false));
 
             return (visited, cost, found);
         }
 
+        /// <summary>
+        /// Implementing Dijkstras algorithm the shortest path between <paramref name="start"/> and <paramref name="end"/> is found.
+        /// </summary>
+        /// <param name="start">From</param>
+        /// <param name="end">To</param>
+        /// <returns></returns>
+        public static (List<Node> visited, int cost, bool found) DijkstrasShortestPath(Node start, Node end)
+        {
+            var minCostsToStart = DijkstrasCosts(start, end);
+            
+            var found = true; // TODO
+
+            //var shortestPath = new List<Node>();
+
+            var endNodeCost = minCostsToStart.Find((nc) => nc.Node == end);
+            var cost = endNodeCost.CostToStart;
+
+            var shortestPath = DijkstrasPath(endNodeCost);
+
+            return (shortestPath, cost, found);
+        }
+
         // TODO: compare paths to find shortest
-        private static (List<Node> visited, int cost, bool found) FindPath(Node current, Node end, int cost, (List<Node> visited, int cost, bool found) path)
+        private static (List<Node> visited, int cost, bool found) FindPath(Node current, Node end, int edgeWeight, (List<Node> visited, int cost, bool found) path)
         {
             if (current.Name == end.Name)
             {
@@ -45,7 +64,7 @@
 
             foreach (var edge in current.Edges)
             {
-                var previousCost = path.cost + edge.Weight;
+                //var currentCost = path.cost + edge.Weight;
 
                 // Don't visit a node twice.
                 if (!path.visited.Contains(edge.Node))
@@ -54,25 +73,115 @@
                     path.visited.Add(edge.Node);
                     path.cost += edge.Weight;
                     // ...and move in to node.
-                    FindPath(edge.Node, end, edge.Weight, path);
+                    return FindPath(edge.Node, end, edge.Weight, path);
                 }
 
                 // if current paths cost is <= ???
-                if (path.cost <= previousCost)
-                {
-                    return path;
-                }
+                //if (path.cost <= previousCost)
+                //{
+                //    return path;
+                //}
 
                 // TODO: dont remove`yet?
-                path.visited.Remove(edge.Node);
-                path.cost -= edge.Weight;
-                return path;
+                //path.visited.Remove(edge.Node);
+                //path.cost -= edge.Weight;
+                //return path;
             }
 
             // Dead end, remove edge from path and return.
-            path.visited.RemoveAt(path.visited.Count - 1);
-            path.cost -= cost;
+            //path.visited.RemoveAt(path.visited.Count - 1);
+            path.visited.Remove(current);
+            path.cost -= edgeWeight;
             return path;
+        }
+
+        /// <summary>
+        /// Build and return
+        /// </summary>
+        /// <param name="end"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        private static List<Node> DijkstrasPath(NodeCost end, List<Node> path = null)
+        {
+            if (path is null) path = new List<Node>();
+
+            path.Add(end.Node);
+
+            if (end.TowardStart == null) return path;
+
+            return DijkstrasPath(end.TowardStart, path);
+        }
+
+        /// <summary>
+        /// Implementation of Dijkstras algorithm, to find shortest paths from each node connected to <paramref name="start"/>.
+        /// </summary>
+        /// <param name="start">To find shortest paths to.</param>
+        /// <param name="end">
+        /// Node we are looking to find shortest path from <paramref name="start"/> to.
+        /// Satisfies the search.
+        /// </param>
+        /// <returns>Min costs of <paramref name="nodes"/> when traveling to <paramref name="start"/>.</returns>
+        private static List<NodeCost> DijkstrasCosts(Node start, Node end) // TODO remove end?
+        {
+            if (start is null || end is null) return null;
+
+            List<NodeCost> nodeCosts = new List<NodeCost>();
+            var startNodeCost = new NodeCost(start, null, 0);
+
+            // Initialize the prio queue with start.
+            List<NodeCost> prioQueue = new List<NodeCost>();
+            prioQueue.Add(startNodeCost);
+
+            var queuedCount = 0;
+
+            // Calculate min cost from each node to start.
+            while (prioQueue.Count > 0)
+            {
+                // Pop!
+                var nodeCost = prioQueue.FirstOrDefault();
+                prioQueue.RemoveAt(0);
+
+                // For every edge of current node.
+                foreach (var edge in nodeCost.Node.Edges)
+                {
+                    // Except edge back to node that has been visited.
+                    if (nodeCosts.Find((nc) => nc.Node == nodeCost.Node) != null)
+                    {
+                        continue;
+                    }
+
+                    // Set node and cost towards start from edge node.
+                    var edgeCostToStart = nodeCost.CostToStart + edge.Weight;
+                    var edgeNodeCost = new NodeCost(edge.Node, nodeCost, edgeCostToStart);
+
+                    var previousCost = nodeCosts.Find((nc) => nc.Node == edgeNodeCost.Node);
+
+                    // Compare previous cost. 
+                    if (previousCost != null)
+                    {
+                        if (previousCost.CostToStart > edgeNodeCost.CostToStart)
+                        {
+                            previousCost.CostToStart = edgeNodeCost.CostToStart; // TODO why no go here?
+                            previousCost.TowardStart = edgeNodeCost.TowardStart;
+                        }
+                    }
+
+                    // Queue edge to have its min cost to start determined.
+                    prioQueue.Add(edgeNodeCost);
+                    queuedCount++;
+                }
+
+                // Node is visited, min cost determined.
+                if (nodeCosts.Find((nc) => nc.Node == nodeCost.Node) is null)
+                {
+                    nodeCosts.Add(nodeCost);
+                }
+
+                // Stop searching. 
+                //if (nodeCost.Node == end) break; // TODO not neccesarily shortest if breaking...?
+            }
+
+            return nodeCosts;
         }
 
         public static int ShortestPath(Node start, Node visit, Node end)
