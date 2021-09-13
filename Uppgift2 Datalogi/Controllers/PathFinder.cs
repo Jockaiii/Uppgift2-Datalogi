@@ -9,7 +9,7 @@
     {
         public static (List<Node> visited, int cost, bool found) ShortestPath(Node start, Node end)
         {
-            var paths = new List<(List<Node> visited, int cost, bool found)>();
+            _ = new List<(List<Node> visited, int cost, bool found)>();
 
             // TODO: out of all possible paths which is fastest?
 
@@ -138,12 +138,12 @@
                     if (nodeName2 == endNode.Name)
                     {
                         List<string> visitedNodes = new List<string>();
-                        int totalWeight = 
-                            RouteCity.Edges.Find(f => f.Connections.Contains(nodeName) && f.Connections.Contains(nodeName2)).Weight + 
+                        int totalWeight =
+                            RouteCity.Edges.Find(f => f.Connections.Contains(nodeName) && f.Connections.Contains(nodeName2)).Weight +
                             RouteCity.Edges.Find(f => f.Connections.Contains(startNode.Name) && f.Connections.Contains(nodeName)).Weight;
                         visitedNodes.Add(nodeName); // Den mittersta nodens namn i pathen (första och sista finns i InputOutput.UserNodes
 
-                        Paths.Add(new Models.Path(totalWeight, visitedNodes));
+                        Paths.Add(new Path(totalWeight, visitedNodes));
                         return true;
                     }
             return false;
@@ -194,12 +194,12 @@
                     TotalWeight2 += RouteCity.Edges.Find(f => f.Connections.Contains(currentNode.Name) && f.Connections.Contains(endNode.Name)).Weight;
                     VisitedNodes2.Add(nodeName);
 
-                    Paths.Add(new Models.Path(TotalWeight2, VisitedNodes2));
+                    Paths.Add(new Path(TotalWeight2, VisitedNodes2));
                     VisitedNodes2.Clear();
                     TotalWeight2 = 0;
                 }
 
-            if (Count <= currentNode.Connections.Count - 1) // Rekurserar genom alla currentNodes connections.
+            if (Count <= currentNode.Connections.Count - 1) // Rekurserar genom alla currentNodes connections. OBS Fortsätter med en ny nod connections hela tiden.
                 PathFinder2(startNode, RouteCity.Nodes.Find(f => f.Name == currentNode.Connections[Count]), endNode);
             else
             {

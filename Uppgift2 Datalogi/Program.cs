@@ -2,7 +2,7 @@
 {
     using Uppgift2_Datalogi.Views;
 
-    class Program
+    static class Program
     {
         static void Main()
         {
