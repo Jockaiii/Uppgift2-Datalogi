@@ -14,16 +14,12 @@
             //InputOutput.OutputResult();
 
             var nodes = Seeder.Data();
-            var start = nodes.Find(n => n.Name == "A");
-            var   end = nodes.Find(n => n.Name == "J");
+            //var start = nodes.Find(n => n.Name == "A");
+            //var   end = nodes.Find(n => n.Name == "J");
+            //var shortestPath = PathFinder.DijkstrasShortestPath(start, end);
 
-            //var dijkstras = PathFinder.DijkstrasCosts(start, end);
-
-            var shortestPath = PathFinder.DijkstrasShortestPath(start, end);
-
-            // TODO: can find path, but not shortest
-            //var view = new PathFinderView(nodes);
-            //view.StartMenu();
+            var view = new PathFinderView(nodes);
+            view.StartMenu();
         }
     }
 }

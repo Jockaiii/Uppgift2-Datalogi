@@ -51,7 +51,7 @@
             allowedNodes.Remove(Start);
             End = ConsoleInput.PromptNode(allowedNodes, "end");
 
-            var (visited, cost, found) = PathFinder.ShortestPath(Start, End);
+            var (visited, cost, found) = PathFinder.DijkstrasShortestPath(Start, End);
 
             if (found)
             {
