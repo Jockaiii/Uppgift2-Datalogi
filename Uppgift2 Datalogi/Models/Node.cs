@@ -4,8 +4,12 @@
 
     public class Node
     {
-        public string Name { get; set; } // Namnet på nod/busshållplatsen.
+        public string Name { get; set; }
         public List<string> Connections { get; set; } // lista med noder som ligger kopplade med noden.
+
+        /// <summary>
+        /// All connected nodes, and their weights.
+        /// </summary>
         public List<(Node Node, int Weight)> Edges { get; set; } = new List<(Node, int)>();
 
         public Node(string name, List<string> connections) // constructor för noder.
@@ -14,15 +18,19 @@
             Connections = connections;
         }
 
+        /// <summary>
+        /// Creates an object of Node with <paramref name="name"/>.
+        /// </summary>
+        /// <param name="name">Name of node</param>
         public Node(string name)
         {
             Name = name;
         }
 
         /// <summary>
-        ///Name of node and names and weights of all connected nodes.
+        /// String representation of the node and its connections.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Name of node and names and weights of all connected nodes.</returns>
         public override string ToString()
         {
             var nodeToString = $"{Name}:";
