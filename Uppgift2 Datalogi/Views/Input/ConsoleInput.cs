@@ -34,30 +34,6 @@
         }
 
         /// <summary>
-        /// Prompt user for a number, if a valid number is not entered the user is prompted until one is.
-        /// </summary>
-        /// <param name="minAllowed">Min allowed input.</param>
-        /// <param name="maxAllowed">Max allowed input.</param>
-        /// <returns>A number between <paramref name="minAllowed"/> and <paramref name="maxAllowed"/>.</returns>
-        public static int PromptNumber(int minAllowed, int maxAllowed)
-        {
-            Console.WriteLine($"Enter a number between {minAllowed} and {maxAllowed} please.");
-            Console.Write("> ");
-            var input = Console.ReadLine();
-            Console.WriteLine();
-
-            try
-            {
-                var number = int.Parse(input, NumberStyles.Integer);
-                return number > minAllowed && number < maxAllowed ? number : PromptNumber(minAllowed, maxAllowed);
-            }
-            catch (Exception)
-            {
-                return PromptNumber(minAllowed, maxAllowed);
-            }
-        }
-
-        /// <summary>
         /// Prompt user to select a node.
         /// </summary>
         /// <param name="validNodes">Nodes to select from.</param>

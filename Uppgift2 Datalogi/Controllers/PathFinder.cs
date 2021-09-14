@@ -196,8 +196,6 @@
 
         public static (List<Node> path, int cost) DijkstrasShortestPath(Node start, Node visit, Node end)
         {
-            throw new NotImplementedException();
-
             var shortestPath = DijkstrasShortestPath(start, visit);
             var visitToEnd = DijkstrasShortestPath(visit, end);
 

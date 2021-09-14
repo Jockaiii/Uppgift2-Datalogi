@@ -17,7 +17,7 @@
             //var shortestPath = PathFinder.DijkstrasShortestPath(start, end);
 
             var view = new PathFinderView(nodes);
-            view.StartMenu();
+            view.Display();
         }
     }
 }

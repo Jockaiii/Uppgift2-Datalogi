@@ -11,15 +11,19 @@
         private Node Visit { get; set; }
         private Node End { get; set; }
 
+        /// <summary>
+        /// Creates a view for a network of <paramref name="nodes"/>.
+        /// </summary>
+        /// <param name="nodes">All nodes of the network.</param>
         public PathFinderView(List<Node> nodes)
         {
             Nodes = nodes;
         }
 
         /// <summary>
-        /// Start console interface.
+        /// Start the view.
         /// </summary>
-        public void StartMenu()
+        public void Display()
         {
             // Present menu until exit.
             var exit = false;
@@ -75,7 +79,11 @@
             allowedNodes.Remove(End);
             Visit = ConsoleInput.PromptNode(allowedNodes, "visiting");
 
-            // TODO
+            var (path, cost) = PathFinder.DijkstrasShortestPath(Start, Visit, End);
+
+            Console.WriteLine($"Shortest path found between {Start.Name} and {End.Name} when also visiting {Visit.Name}:\n");
+            WritePath(path);
+            Console.WriteLine($"Total cost: {cost}\n");
         }
 
         /// <summary>
