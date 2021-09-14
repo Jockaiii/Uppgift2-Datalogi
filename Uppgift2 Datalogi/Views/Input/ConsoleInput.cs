@@ -58,7 +58,7 @@
         }
 
         /// <summary>
-        /// Prompts user to select a node.
+        /// Prompt user to select a node.
         /// </summary>
         /// <param name="validNodes">Nodes to select from.</param>
         /// <param name="nodePurpose">Purpose of the node to instruct user, i.e. visiting.</param>

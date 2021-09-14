@@ -28,7 +28,7 @@
         }
 
         /// <summary>
-        /// String representation of the node and its connections.
+        /// String description of the node and its connections.
         /// </summary>
         /// <returns>Name of node and names and weights of all connected nodes.</returns>
         public override string ToString()

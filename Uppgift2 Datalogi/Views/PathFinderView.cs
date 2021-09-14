@@ -17,14 +17,14 @@
         }
 
         /// <summary>
-        /// Start console user interface.
+        /// Start console interface.
         /// </summary>
         public void StartMenu()
         {
+            // Present menu until exit.
             var exit = false;
             while (!exit)
             {
-                // Display menu.
                 switch (ConsoleInput.PromptMenuSelect())
                 {
                     case "1":
@@ -43,6 +43,9 @@
             }
         }
 
+        /// <summary>
+        /// Find the shortest path between two nodes.
+        /// </summary>
         private void FindShortestPathTwoNodes()
         {
             var allowedNodes = new List<Node>(Nodes);
@@ -51,20 +54,16 @@
             allowedNodes.Remove(Start);
             End = ConsoleInput.PromptNode(allowedNodes, "end");
 
-            var (visited, cost, found) = PathFinder.DijkstrasShortestPath(Start, End);
+            var (path, cost) = PathFinder.DijkstrasShortestPath(Start, End);
 
-            if (found)
-            {
-                Console.WriteLine($"Shortest path found between {Start.Name} and {End.Name}:\n");
-                WritePath(visited);
-                Console.WriteLine($"Total cost: {cost}\n");
-            }
-            else
-            {
-                Console.WriteLine($"No path was found between {Start.Name} and {End.Name}.\n");
-            }
+            Console.WriteLine($"Shortest path found between {Start.Name} and {End.Name}:\n");
+            WritePath(path);
+            Console.WriteLine($"Total cost: {cost}\n");
         }
 
+        /// <summary>
+        /// Find the shortest path between three nodes.
+        /// </summary>
         private void FindShortestPathThreeNodes()
         {
             var allowedNodes = new List<Node>(Nodes);
@@ -79,6 +78,9 @@
             // TODO
         }
 
+        /// <summary>
+        /// Write nodes in the network to console.
+        /// </summary>
         private void WriteNetwork()
         {
             Console.WriteLine("<Node>:\t<Edge(Weight)> ...\n");
@@ -89,6 +91,10 @@
             Console.WriteLine();
         }
 
+        /// <summary>
+        /// Write path to console.
+        /// </summary>
+        /// <param name="path">Path of nodes, in order, starting at first element.</param>
         private void WritePath(List<Node> path)
         {
             var pathStr = string.Empty;

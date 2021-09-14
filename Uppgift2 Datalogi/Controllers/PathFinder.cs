@@ -19,23 +19,19 @@
         /// <summary>
         /// Implementing Dijkstras algorithm the shortest path between <paramref name="start"/> and <paramref name="end"/> is found.
         /// </summary>
-        /// <param name="start">From</param>
-        /// <param name="end">To</param>
-        /// <returns></returns>
-        public static (List<Node> visited, int cost, bool found) DijkstrasShortestPath(Node start, Node end)
+        /// <param name="start">Node to begin the path on, and in the same graph as <paramref name="end"/>.</param>
+        /// <param name="end">Node to reach from <paramref name="start"/>.</param>
+        /// <returns>Path of nodes and total cost of path.</returns>
+        public static (List<Node> path, int cost) DijkstrasShortestPath(Node start, Node end)
         {
             var minCostsToStart = DijkstrasCosts(start, end);
-            
-            var found = true; // TODO
-
-            //var shortestPath = new List<Node>();
 
             var endNodeCost = minCostsToStart.Find((nc) => nc.Node == end);
             var cost = endNodeCost.CostToStart;
 
             var shortestPath = DijkstrasPath(endNodeCost);
 
-            return (shortestPath, cost, found);
+            return (shortestPath, cost);
         }
 
         // TODO: compare paths to find shortest
@@ -107,7 +103,7 @@
 
             path.Add(end.Node);
 
-            if (end.TowardStart == null) return path;
+            if (end.TowardStart is null) return path;
 
             return DijkstrasPath(end.TowardStart, path);
         }
@@ -123,8 +119,6 @@
         /// <returns>Min costs of <paramref name="nodes"/> when traveling to <paramref name="start"/>.</returns>
         private static List<NodeCost> DijkstrasCosts(Node start, Node end) // TODO remove end?
         {
-            if (start is null || end is null) return null;
-
             List<NodeCost> nodeCosts = new List<NodeCost>();
             var startNodeCost = new NodeCost(start, null, 0);
 
@@ -161,7 +155,7 @@
                     {
                         if (previousCost.CostToStart > edgeNodeCost.CostToStart)
                         {
-                            previousCost.CostToStart = edgeNodeCost.CostToStart; // TODO why no go here?
+                            previousCost.CostToStart = edgeNodeCost.CostToStart;
                             previousCost.TowardStart = edgeNodeCost.TowardStart;
                         }
                     }
@@ -182,6 +176,24 @@
             }
 
             return nodeCosts;
+        }
+
+        // TODO can we make recursive for any amount of nodes to visit?
+        public static int DijkstrasShortestPath(Node start, Node end, params Node[] nodes)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static (List<Node> path, int cost) DijkstrasShortestPath(Node start, Node visit, Node end)
+        {
+            throw new NotImplementedException();
+
+            var shortestPath = DijkstrasShortestPath(start, visit);
+            var visitToEnd = DijkstrasShortestPath(visit, end);
+
+            shortestPath.path.AddRange(visitToEnd.path);
+
+            return (shortestPath.path, shortestPath.cost + visitToEnd.cost);
         }
 
         public static int ShortestPath(Node start, Node visit, Node end)

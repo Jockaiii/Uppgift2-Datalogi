@@ -29,7 +29,7 @@
         }
 
         /// <summary>
-        /// String representation of the node cost.
+        /// String description of the node cost.
         /// </summary>
         /// <returns>Name of node, name of node that leads towards start, and cost for reaching start from this node.</returns>
         public override string ToString()
