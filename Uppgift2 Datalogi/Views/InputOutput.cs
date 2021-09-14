@@ -13,10 +13,12 @@
         public static void StartMenu()
         {
             string userInput;
-            do
+            bool Continue  = true;
+
+            while(Continue)
             {
                 Console.WriteLine("[1] To calculate the shortest route between 2 nodes of your choice\n" +
-                    "[2] To calculate the shortest route between 2 nodes of your choice with a stop of your choice\n[3] To close the application\n");
+                    "[2] To calculate the shortest route between 3 nodes of your choice\n[3] To close the application\n");
                 Console.Write("Input: ");
                 userInput = Console.ReadLine();
 
@@ -24,18 +26,23 @@
                 {
                     case "1":
                         NodeInputHandler(int.Parse(userInput));
+                        PathFinder.PathHandler();
+                        OutputResult();
                         break;
                     case "2":
                         NodeInputHandler(int.Parse(userInput));
+                        PathFinder.PathHandler();
+                        OutputResult();
                         break;
                     case "3":
+                        Continue = false;
                         break;
                     default:
                         Console.Clear();
                         Console.WriteLine("Wrong type of input, please try again\n");
                         break;
                 }
-            } while (!int.TryParse(userInput, out _) && userInput.Length > 0 && userInput.Length < 4);
+            }
         }
 
         /// <summary>
