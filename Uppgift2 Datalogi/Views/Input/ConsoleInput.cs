@@ -84,7 +84,7 @@
             // Get valid node with name equal to user input.
             var node = validNodes.Find((node) => string.Equals(node.Name, input, StringComparison.OrdinalIgnoreCase));
 
-            // Prompt user input again until a valid node is selected.
+            // If valid node is selected return it, otherwise prompt user input again.
             return node ?? PromptNode(validNodes, nodePurpose);
         }
     }

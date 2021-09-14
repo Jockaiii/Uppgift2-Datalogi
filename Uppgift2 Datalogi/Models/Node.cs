@@ -2,6 +2,9 @@
 {
     using System.Collections.Generic;
 
+    /// <summary>
+    /// Represents a point in a connected network of nodes.
+    /// </summary>
     public class Node
     {
         public string Name { get; set; }
