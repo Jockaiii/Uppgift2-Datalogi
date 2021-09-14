@@ -13,7 +13,7 @@ namespace Uppgift2_Datalogi.Tests
         [TestInitialize()]
         public void TestInitialize()
         {
-            // Setup the node network with seed data.
+            // Setup the node network with seeder data.
             Nodes = Seeder.Data();
         }
 

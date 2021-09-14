@@ -67,6 +67,7 @@
         {
             Console.WriteLine($"Select {nodePurpose} node");
 
+            // Write valid nodes.
             var validInput = " [";
             foreach (var validNode in validNodes)
             {
@@ -80,8 +81,10 @@
             var input = Console.ReadLine();
             Console.WriteLine();
 
+            // Get valid node with name equal to user input.
             var node = validNodes.Find((node) => string.Equals(node.Name, input, StringComparison.OrdinalIgnoreCase));
 
+            // Prompt user input again until a valid node is selected.
             return node ?? PromptNode(validNodes, nodePurpose);
         }
     }

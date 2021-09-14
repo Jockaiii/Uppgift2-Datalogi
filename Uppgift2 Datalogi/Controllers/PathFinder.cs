@@ -22,6 +22,7 @@
         /// <param name="start">Node to begin the path on, and in the same graph as <paramref name="end"/>.</param>
         /// <param name="end">Node to reach from <paramref name="start"/>.</param>
         /// <returns>Shortest path of nodes and total cost of that path.</returns>
+        /// <time-complexity>O(?)</time-complexity>
         public static (List<Node> path, int cost) DijkstrasShortestPath(Node start, Node end)
         {
             // Calculate min costs from each node to start.
@@ -102,6 +103,7 @@
         /// <param name="end">Node to end the path on.</param>
         /// <param name="path"></param>
         /// <returns></returns>
+        /// <time-complexity>O(?)</time-complexity>
         private static List<Node> DijkstrasPath(NodeCost end, List<Node> path = null)
         {
             if (path is null) path = new List<Node>();
@@ -124,6 +126,7 @@
         /// Satisfies the search.
         /// </param>
         /// <returns>Min costs of <paramref name="nodes"/> when traveling to <paramref name="start"/>.</returns>
+        /// <time-complexity>O(?)</time-complexity>
         private static List<NodeCost> DijkstrasCosts(Node start, Node end) // TODO remove end?
         {
             List<NodeCost> nodeCosts = new List<NodeCost>();
