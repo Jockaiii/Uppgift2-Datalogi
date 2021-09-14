@@ -21,15 +21,20 @@
         /// </summary>
         /// <param name="start">Node to begin the path on, and in the same graph as <paramref name="end"/>.</param>
         /// <param name="end">Node to reach from <paramref name="start"/>.</param>
-        /// <returns>Path of nodes and total cost of path.</returns>
+        /// <returns>Shortest path of nodes and total cost of that path.</returns>
         public static (List<Node> path, int cost) DijkstrasShortestPath(Node start, Node end)
         {
+            // Calculate min costs from each node to start.
             var minCostsToStart = DijkstrasCosts(start, end);
 
             var endNodeCost = minCostsToStart.Find((nc) => nc.Node == end);
             var cost = endNodeCost.CostToStart;
 
+            // Build path from end to start.
             var shortestPath = DijkstrasPath(endNodeCost);
+
+            // Path is built from end to start so need to reverse it to get the right order.
+            shortestPath.Reverse();
 
             return (shortestPath, cost);
         }
@@ -92,9 +97,9 @@
         }
 
         /// <summary>
-        /// Build and return
+        /// Build the path in reverse, from end to start.
         /// </summary>
-        /// <param name="end"></param>
+        /// <param name="end">Node to end the path on.</param>
         /// <param name="path"></param>
         /// <returns></returns>
         private static List<Node> DijkstrasPath(NodeCost end, List<Node> path = null)
@@ -103,8 +108,10 @@
 
             path.Add(end.Node);
 
+            // Start is reached and the path is complete.
             if (end.TowardStart is null) return path;
 
+            // Recursively build the path in reverse, from end until start, using the next node closest to start. 
             return DijkstrasPath(end.TowardStart, path);
         }
 

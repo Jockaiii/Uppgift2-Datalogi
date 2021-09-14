@@ -6,18 +6,18 @@
     {
         private static void Main()
         {
-            Seeder.NodeSeeder();
-            Seeder.EdgeSeeder();
+            //Seeder.NodeSeeder();
+            //Seeder.EdgeSeeder();
 
-            InputOutput.StartMenu();
+            //InputOutput.StartMenu();
 
-            //var nodes = Seeder.Data();
+            var nodes = Seeder.Data();
             //var start = nodes.Find(n => n.Name == "A");
             //var   end = nodes.Find(n => n.Name == "J");
             //var shortestPath = PathFinder.DijkstrasShortestPath(start, end);
 
-            //var view = new PathFinderView(nodes);
-            //view.StartMenu();
+            var view = new PathFinderView(nodes);
+            view.StartMenu();
         }
     }
 }
