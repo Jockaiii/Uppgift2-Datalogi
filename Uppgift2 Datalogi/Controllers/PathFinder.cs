@@ -202,8 +202,7 @@
                 //    if (!CheckEndNodeFrom2NodesAway(startNode, endNode)) // Om slutnoden inte ligger brevid startnoden
                 //        CheckEndNodeFrom3NodesAway(startNode, endNode); // Kollar alla noder som ligger 3 noder ifrån startnoden
 
-                if (!CheckForEndNodeFrom1NodeAway(startNode, endNode))
-                    PathFinder2(startNode, startNode, endNode);
+                PathFinder2(startNode, startNode, endNode);
             }
             else// om användaren har valt 2 nodes med en mellanlandning
             {
@@ -290,32 +289,47 @@
                         Paths.RemoveAt(j);
         }
 
-        public static List<string> VisitedNodes2 { get; set; } = new List<string>();
+        public static List<string> VisitedNodes { get; set; } = new List<string>();
         public static int Count { get; set; } = -1;
-        public static int TotalWeight2 { get; set; }
         public static void PathFinder2(Node startNode, Node currentNode, Node endNode) // rekursions version av algortimen.
         {
-            foreach (var nodeName in currentNode.Connections)
-                if (nodeName == endNode.Name)
-                {
-                    VisitedNodes2.Add(nodeName);
-
-                    RouteCity.AddPath(startNode.Name, endNode.Name);
-                    VisitedNodes2.Clear();
-                }
-
-            for (int i = 0; i < currentNode.Connections.Count; i++) // rekuserar Pathfinder med noder ett steg längre bort (vars connections rekurserars ovan)
+            bool newNode = true;
+            if (VisitedNodes.Count > 1) { } // Om det är fler än 3 antal noder så ska dessa vägar inte läggas till.
+            else
             {
-                if (i > 0)
+                foreach (var nodeName in currentNode.Connections)
+                    if (nodeName == endNode.Name)
+                    {
+                        RouteCity.AddPath(startNode.Name, endNode.Name);
+                        VisitedNodes.Clear();
+                    }
+
+                if (newNode)
                 {
-                    VisitedNodes2.RemoveAt(VisitedNodes2.Count - 1);
+                    for (int i = 0; i < currentNode.Connections.Count; i++) // rekuserar Pathfinder med currentNodes connections.
+                    {
+                        newNode = false;
+                        if (i > 0)
+                            VisitedNodes.RemoveAt(VisitedNodes.Count - 1);
+
+                        Node nextNode = RouteCity.Nodes.Find(f => f.Name == currentNode.Connections[i]);
+                        VisitedNodes.Add(nextNode.Name);
+                        PathFinder2(startNode, nextNode, endNode);
+                    }
+                    VisitedNodes.RemoveAt(VisitedNodes.Count - 1);
+
+                    if (RouteCity.Nodes.Count <= Count)
+                    {
+                        if (Count > 0)
+                            VisitedNodes.RemoveAt(VisitedNodes.Count - 1);
+                        newNode = true;
+                        Count++;
+                        Node nextNode2 = RouteCity.Nodes.Find(f => f.Name == currentNode.Connections[Count]);
+                        VisitedNodes.Add(nextNode2.Name);
+                        PathFinder2(startNode, nextNode2, endNode); // Rekurserar PathFinder en nod djupare.
+                    }
                 }
-                Node nextNode = RouteCity.Nodes.Find(f => f.Name == currentNode.Connections[i]);
-                VisitedNodes2.Add(nextNode.Name);
-                PathFinder2(startNode, nextNode, endNode);
             }
-            Count++;
-            PathFinder2(startNode, RouteCity.Nodes.Find(f => f.Name == currentNode.Connections[Count]), endNode);
         }
     }
 }
