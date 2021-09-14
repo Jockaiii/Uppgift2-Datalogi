@@ -7,107 +7,47 @@
 
     public static class PathFinder
     {
-        // TODO: compare paths to find shortest
-        public static (List<Node> visited, int cost, bool found) ShortestPath(Node start, Node end)
-        {
-            // Get a path...
-            var (visited, cost, found) = FindPath(start, end, 0, (new List<Node>() { start }, 0, false));
-
-            return (visited, cost, found);
-        }
-
         /// <summary>
         /// Implementing Dijkstras algorithm the shortest path between <paramref name="start"/> and <paramref name="end"/> is found.
         /// </summary>
-        /// <param name="start">From</param>
-        /// <param name="end">To</param>
-        /// <returns></returns>
-        public static (List<Node> visited, int cost, bool found) DijkstrasShortestPath(Node start, Node end)
+        /// <param name="start">Node to begin the path on, and in the same graph as <paramref name="end"/>.</param>
+        /// <param name="end">Node to reach from <paramref name="start"/>.</param>
+        /// <returns>Shortest path of nodes and total cost of that path.</returns>
+        /// <time-complexity>O(?)</time-complexity>
+        public static (List<Node> path, int cost) ShortestPath(Node start, Node end)
         {
+            // Calculate min costs from each node to start.
             var minCostsToStart = DijkstrasCosts(start, end);
-            var found = true; // TODO
-
-            //var shortestPath = new List<Node>();
 
             var endNodeCost = minCostsToStart.Find((nc) => nc.Node == end);
             var cost = endNodeCost.CostToStart;
 
+            // Build path from end to start.
             var shortestPath = DijkstrasPath(endNodeCost);
 
-            return (shortestPath, cost, found);
-        }
+            // Path is built from end to start so need to reverse it to get the right order.
+            shortestPath.Reverse();
 
-        // TODO: compare paths to find shortest
-        private static (List<Node> visited, int cost, bool found) FindPath(Node current, Node end, int edgeWeight, (List<Node> visited, int cost, bool found) path)
-        {
-            if (current.Name == end.Name)
-            {
-                // End node found.
-                path.found = true;
-                return path;
-            }
-
-            #region TODO: how compare paths?
-            //int[] pathCosts = new int[current.Edges.Count];
-
-            //for (int i = 0; i < current.Edges.Count; i++)
-            //{
-            //    if (path.cost > previousCost)
-            //    {
-            //        path.visited.Remove(current.Edges[i].Node);
-            //        path.cost -= current.Edges[i].Weight;
-            //    }
-            //    pathCosts[i] = path.cost;
-            //}
-            #endregion
-
-            foreach (var edge in current.Edges)
-            {
-                //var currentCost = path.cost + edge.Weight;
-
-                // Don't visit a node twice.
-                if (!path.visited.Contains(edge.Node))
-                {
-                    // Add node and cost to path...
-                    path.visited.Add(edge.Node);
-                    path.cost += edge.Weight;
-                    // ...and move in to node.
-                    return FindPath(edge.Node, end, edge.Weight, path);
-                }
-
-                // if current paths cost is <= ???
-                //if (path.cost <= previousCost)
-                //{
-                //    return path;
-                //}
-
-                // TODO: dont remove`yet?
-                //path.visited.Remove(edge.Node);
-                //path.cost -= edge.Weight;
-                //return path;
-            }
-
-            // Dead end, remove edge from path and return.
-            //path.visited.RemoveAt(path.visited.Count - 1);
-            path.visited.Remove(current);
-            path.cost -= edgeWeight;
-            return path;
+            return (shortestPath, cost);
         }
 
         /// <summary>
-        /// Build and return
+        /// Build the path in reverse, from end to start.
         /// </summary>
-        /// <param name="end"></param>
+        /// <param name="end">Node to end the path on.</param>
         /// <param name="path"></param>
         /// <returns></returns>
+        /// <time-complexity>O(?)</time-complexity>
         private static List<Node> DijkstrasPath(NodeCost end, List<Node> path = null)
         {
             if (path is null) path = new List<Node>();
 
             path.Add(end.Node);
 
-            if (end.TowardStart == null) return path;
+            // Start is reached and the path is complete.
+            if (end.TowardStart is null) return path;
 
+            // Recursively build the path in reverse, from end until start, using the next node closest to start. 
             return DijkstrasPath(end.TowardStart, path);
         }
 
@@ -120,10 +60,9 @@
         /// Satisfies the search.
         /// </param>
         /// <returns>Min costs of <paramref name="nodes"/> when traveling to <paramref name="start"/>.</returns>
+        /// <time-complexity>O(?)</time-complexity>
         private static List<NodeCost> DijkstrasCosts(Node start, Node end) // TODO remove end?
         {
-            if (start is null || end is null) return null;
-
             List<NodeCost> nodeCosts = new List<NodeCost>();
             var startNodeCost = new NodeCost(start, null, 0);
 
@@ -160,7 +99,7 @@
                     {
                         if (previousCost.CostToStart > edgeNodeCost.CostToStart)
                         {
-                            previousCost.CostToStart = edgeNodeCost.CostToStart; // TODO why no go here?
+                            previousCost.CostToStart = edgeNodeCost.CostToStart;
                             previousCost.TowardStart = edgeNodeCost.TowardStart;
                         }
                     }
@@ -183,7 +122,18 @@
             return nodeCosts;
         }
 
-        public static int ShortestPath(Node start, Node visit, Node end)
+        public static (List<Node> path, int cost) ShortestPath(Node start, Node visit, Node end)
+        {
+            var shortestPath = ShortestPath(start, visit);
+            var visitToEnd = ShortestPath(visit, end);
+
+            shortestPath.path.AddRange(visitToEnd.path);
+
+            return (shortestPath.path, shortestPath.cost + visitToEnd.cost);
+        }
+
+        // TODO can we make recursive and for any amount of nodes to visit?
+        public static int ShortestPath(Node start, Node end, params Node[] nodes)
         {
             throw new NotImplementedException();
         }
