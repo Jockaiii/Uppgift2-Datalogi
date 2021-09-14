@@ -4,9 +4,12 @@
     using System.Collections.Generic;
     using System.Text;
 
+    /// <summary>
+    /// View for displaying a network of nodes and finding the shortest path between 2 or 3 nodes.
+    /// </summary>
     public class PathFinderView
     {
-        private List<Node> Nodes { get; set; }
+        private List<Node> Nodes { get; }
         private Node Start { get; set; }
         private Node Visit { get; set; }
         private Node End { get; set; }
@@ -58,7 +61,7 @@
             allowedNodes.Remove(Start);
             End = ConsoleInput.PromptNode(allowedNodes, "end");
 
-            var (path, cost) = PathFinder.DijkstrasShortestPath(Start, End);
+            var (path, cost) = PathFinder.ShortestPath(Start, End);
 
             Console.WriteLine($"Shortest path found between {Start.Name} and {End.Name}:\n");
             WritePath(path);
@@ -79,7 +82,7 @@
             allowedNodes.Remove(End);
             Visit = ConsoleInput.PromptNode(allowedNodes, "visiting");
 
-            var (path, cost) = PathFinder.DijkstrasShortestPath(Start, Visit, End);
+            var (path, cost) = PathFinder.ShortestPath(Start, Visit, End);
 
             Console.WriteLine($"Shortest path found between {Start.Name} and {End.Name} when also visiting {Visit.Name}:\n");
             WritePath(path);
