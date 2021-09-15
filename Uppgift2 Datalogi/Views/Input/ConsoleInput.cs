@@ -23,14 +23,18 @@
             var input = Console.ReadLine().ToUpper();
             Console.WriteLine();
 
-            return input switch
+            switch (input)
             {
-                "1" => input,
-                "2" => input,
-                "3" => input,
-                "E" => input,
-                _ => PromptMenuSelect(),
-            };
+                case "1":
+                case "2":
+                case "3":
+                case "E":
+                    return input;
+                default:
+                    Console.Clear();
+                    Console.WriteLine("Wrong type of input, please try again\n");
+                    return PromptMenuSelect();
+            }
         }
 
         /// <summary>
