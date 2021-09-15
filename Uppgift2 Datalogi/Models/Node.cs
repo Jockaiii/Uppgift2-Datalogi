@@ -3,7 +3,7 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// Represents a point in a connected network of nodes.
+    /// Represents a node (or point) in a network and it's connected nodes.
     /// </summary>
     public class Node
     {
