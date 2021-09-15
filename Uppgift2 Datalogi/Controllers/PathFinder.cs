@@ -13,17 +13,17 @@
         /// <param name="start">Node to begin the path on, and in the same graph as <paramref name="end"/>.</param>
         /// <param name="end">Node to reach from <paramref name="start"/>.</param>
         /// <returns>Shortest path of nodes and total cost of that path.</returns>
-        /// <time-complexity>O(?)</time-complexity>
+        /// <time-complexity>O(n + m * e)</time-complexity>
         public static (List<Node> path, int cost) ShortestPath(Node start, Node end)
         {
             // Calculate min costs from each node to start.
-            var minCostsToStart = DijkstrasCosts(start, end);
+            var minCostsToStart = DijkstrasCosts(start);
 
             var endNodeCost = minCostsToStart.Find((nc) => nc.Node == end);
             var cost = endNodeCost.CostToStart;
 
             // Build path from end to start.
-            var shortestPath = DijkstrasPath(endNodeCost);
+            var shortestPath = DijkstrasPath(endNodeCost, new List<Node>());
 
             // Path is built from end to start so need to reverse it to get the right order.
             shortestPath.Reverse();
@@ -32,16 +32,36 @@
         }
 
         /// <summary>
+        /// Implementing Dijkstras algorithm the shortest path between <paramref name="start"/>, <paramref name="visit"/>, and <paramref name="end"/> is found.
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="visit"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
+        /// <time-complexity>O(2n + 2m * e)</time-complexity>
+        public static (List<Node> path, int cost) ShortestPath(Node start, Node visit, Node end)
+        {
+            var (path, cost) = ShortestPath(start, visit);
+            var visitToEnd = ShortestPath(visit, end);
+            
+            // Remove duplicate visit node.
+            visitToEnd.path.RemoveAt(0);
+
+            // Merge paths.
+            path.AddRange(visitToEnd.path);
+
+            return (path, cost + visitToEnd.cost);
+        }
+
+        /// <summary>
         /// Build the path in reverse, from end to start.
         /// </summary>
         /// <param name="end">Node to end the path on.</param>
         /// <param name="path"></param>
         /// <returns></returns>
-        /// <time-complexity>O(?)</time-complexity>
-        private static List<Node> DijkstrasPath(NodeCost end, List<Node> path = null)
+        /// <time-complexity>O(n)</time-complexity>
+        private static List<Node> DijkstrasPath(NodeCost end, List<Node> path)
         {
-            if (path is null) path = new List<Node>();
-
             path.Add(end.Node);
 
             // Start is reached and the path is complete.
@@ -59,34 +79,31 @@
         /// Node we are looking to find shortest path from <paramref name="start"/> to.
         /// Satisfies the search.
         /// </param>
-        /// <returns>Min costs of <paramref name="nodes"/> when traveling to <paramref name="start"/>.</returns>
-        /// <time-complexity>O(?)</time-complexity>
-        private static List<NodeCost> DijkstrasCosts(Node start, Node end) // TODO remove end?
+        /// <returns>Min costs of each node when traveling to <paramref name="start"/>.</returns>
+        /// <time-complexity>O(n * e)</time-complexity>
+        private static List<NodeCost> DijkstrasCosts(Node start)
         {
             List<NodeCost> nodeCosts = new List<NodeCost>();
             var startNodeCost = new NodeCost(start, null, 0);
 
             // Initialize the prio queue with start.
-            List<NodeCost> prioQueue = new List<NodeCost>();
-            prioQueue.Add(startNodeCost);
+            List<NodeCost> queue = new List<NodeCost>();
+            queue.Add(startNodeCost);
 
             var queuedCount = 0;
 
             // Calculate min cost from each node to start.
-            while (prioQueue.Count > 0)
+            while (queue.Count > 0)
             {
-                // Pop!
-                var nodeCost = prioQueue.FirstOrDefault();
-                prioQueue.RemoveAt(0);
+                // Take first
+                var nodeCost = queue.FirstOrDefault();
+                queue.RemoveAt(0);
 
                 // For every edge of current node.
                 foreach (var edge in nodeCost.Node.Edges)
                 {
                     // Except edge back to node that has been visited.
-                    if (nodeCosts.Find((nc) => nc.Node == nodeCost.Node) != null)
-                    {
-                        continue;
-                    }
+                    if (nodeCosts.Find((nc) => nc.Node == nodeCost.Node) != null) continue;
 
                     // Set node and cost towards start from edge node.
                     var edgeCostToStart = nodeCost.CostToStart + edge.Weight;
@@ -105,7 +122,7 @@
                     }
 
                     // Queue edge to have its min cost to start determined.
-                    prioQueue.Add(edgeNodeCost);
+                    queue.Add(edgeNodeCost);
                     queuedCount++;
                 }
 
@@ -114,26 +131,14 @@
                 {
                     nodeCosts.Add(nodeCost);
                 }
-
-                // Stop searching. 
-                //if (nodeCost.Node == end) break; // TODO not neccesarily shortest if breaking...?
             }
 
             return nodeCosts;
         }
 
-        public static (List<Node> path, int cost) ShortestPath(Node start, Node visit, Node end)
-        {
-            var shortestPath = ShortestPath(start, visit);
-            var visitToEnd = ShortestPath(visit, end);
-
-            shortestPath.path.AddRange(visitToEnd.path);
-
-            return (shortestPath.path, shortestPath.cost + visitToEnd.cost);
-        }
 
         // TODO can we make recursive and for any amount of nodes to visit?
-        public static int ShortestPath(Node start, Node end, params Node[] nodes)
+        public static int ShortestPath(Node start, Node end, Node[] visits)
         {
             throw new NotImplementedException();
         }
