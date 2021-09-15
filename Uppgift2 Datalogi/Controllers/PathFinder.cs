@@ -244,8 +244,7 @@
         public static void PathFinder2(Node startNode, Node currentNode, Node endNode) // rekursions version av algortimen.
         {
             bool newNode = true;
-            if (VisitedNodes.Count > 1) { } // Om det är fler än 3 antal noder så ska dessa vägar inte läggas till.
-            else
+            if (VisitedNodes.Count <= 1)
             {
                 foreach (var nodeName in currentNode.Connections)
                     if (nodeName == endNode.Name)

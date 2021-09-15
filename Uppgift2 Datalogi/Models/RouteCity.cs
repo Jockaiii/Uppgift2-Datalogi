@@ -13,8 +13,8 @@
             for (int i = 0; i + 1 < PathFinder.VisitedNodes.Count - 1; i++) // Lägger till vikten av alla kanterna brevid alla noder förutom start och slutnoderna.
                 weight += Edges.Find(f => f.Connections.Contains(PathFinder.VisitedNodes[i]) && f.Connections.Contains(PathFinder.VisitedNodes[i + 1])).Weight;
 
-            if (PathFinder.VisitedNodes.Count != 0) // Om det finns en nod mellan start och slutnoden
-                weight += Edges.Find(f => f.Connections.Contains(startNodeName) && f.Connections.Contains(PathFinder.VisitedNodes[0])).Weight + Edges.Find(f => f.Connections.Contains(endNodeName) && f.Connections.Contains(PathFinder.VisitedNodes[^1])).Weight; // Lägger till vikten av kanterna brevid start och slutnoden.
+            if (PathFinder.VisitedNodes.Count > 0) // Om det finns en nod mellan start och slutnoden
+                weight += Edges.Find(f => f.Connections.Contains(startNodeName) && f.Connections.Contains(PathFinder.VisitedNodes[0])).Weight + Edges.Find(f => f.Connections.Contains(PathFinder.VisitedNodes[^1]) && f.Connections.Contains(endNodeName)).Weight; // Lägger till vikten av kanterna brevid start och slutnoden.
             else // om det bara är start och slutnoden i pathen.
                 weight += Edges.Find(f => f.Connections.Contains(InputOutput.UserNodes[0]) && f.Connections.Contains(InputOutput.UserNodes[1])).Weight;
 
