@@ -135,7 +135,7 @@
                     Console.WriteLine($"The shortest route between {UserNodes[0]} and {UserNodes[1]} is {PathFinder.Paths[0].Weight}km with the path: {UserNodes[0]}-{PathFinder.Paths[0].VisitedNodes[0]}-{PathFinder.Paths[0].VisitedNodes[1]}-{PathFinder.Paths[0].VisitedNodes[2]}-{UserNodes[1]}");
             }
             else
-                Console.WriteLine($"The shortest route between {UserNodes[0]} and {UserNodes[1]} is {PathFinder.Paths[0].Weight}km");
+                Console.WriteLine($"The shortest route between {UserNodes[0]} and {UserNodes[1]} is {PathFinder.Paths[0].Weight}km with the path: {UserNodes[0]}-{UserNodes[1]}");
         }
     }
 }
