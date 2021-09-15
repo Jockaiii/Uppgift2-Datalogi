@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
 
     /// <summary>
     /// View for displaying a network of nodes and finding the shortest path between 2 or 3 nodes.

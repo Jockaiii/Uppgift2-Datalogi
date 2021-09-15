@@ -4,60 +4,6 @@
 
     static public class Seeder
     {
-        public static List<(string nodeName, List<string> connections)> nodeSeedList = new List<(string, List<string> connections)> // Lista med alla kanterna som finns i busshållplatssystemet smat deras egenskaper.
-        {
-            { ("A", new List<string> {"B", "C", "E" }) },
-            { ("B", new List<string> {"A", "C", "D", "H" }) },
-            { ("C", new List<string> {"A", "B", "G", "I" }) },
-            { ("D", new List<string> {"B", "H", "I" }) },
-            { ("E", new List<string> {"A", "F", "G" }) },
-            { ("F", new List<string> {"E", "G" }) },
-            { ("G", new List<string> {"C", "E", "F", "I", "J" }) },
-            { ("H", new List<string> {"B", "D", "G", "J" }) },
-            { ("I", new List<string> {"C", "D", "G", "J" }) },
-            { ("J", new List<string> {"G", "H", "J" }) },
-        };
-
-        public static List<(List<string> connections, int weight)> edgeSeedList = new List<(List<string>, int)> // Lista med alla kanterna som finns i busshållplatssytemet samt deras egenskaper
-        {
-            { (new List<string>{"A","B"}, 4) },
-            { (new List<string>{"A","C"}, 7) },
-            { (new List<string>{"A","E"}, 7) },
-            { (new List<string>{"B","C"}, 3) },
-            { (new List<string>{"B","H"}, 5) },
-            { (new List<string>{"B","D"}, 12) },
-            { (new List<string>{"C","I"}, 12) },
-            { (new List<string>{"C","G"}, 4) },
-            { (new List<string>{"D","H"}, 7) },
-            { (new List<string>{"D","I"}, 3) },
-            { (new List<string>{"E","G"}, 5) },
-            { (new List<string>{"E","F"}, 3) },
-            { (new List<string>{"F","G"}, 5) },
-            { (new List<string>{"G","I"}, 13) },
-            { (new List<string>{"G","J"}, 8) },
-            { (new List<string>{"G","H"}, 8) },
-            { (new List<string>{"H","J"}, 9) },
-            { (new List<string>{"I","J" }, 7) },
-        };
-
-        /// <summary>
-        /// Metod som tillkallar överför noderna i busshållplatssytemet till instansen av programet.
-        /// </summary>
-        public static void NodeSeeder()
-        {
-            foreach (var (nodeName, connections) in nodeSeedList)
-                RouteCity.Nodes.Add(new Node(nodeName, connections));
-        }
-
-        /// <summary>
-        /// Metod som överför kanterna i busshållplatssytemet till instansen av programet.
-        /// </summary>
-        public static void EdgeSeeder()
-        {
-            foreach (var (connections, weight) in edgeSeedList)
-                RouteCity.Edges.Add(new Edge(connections, weight));
-        }
-
         /// <summary>
         /// Get seed data for nodes and edges.
         /// </summary>

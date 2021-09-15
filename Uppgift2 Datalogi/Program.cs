@@ -6,15 +6,10 @@
     {
         private static void Main()
         {
-            Seeder.NodeSeeder();
-            Seeder.EdgeSeeder();
+            var nodes = Seeder.Data();
 
-            InputOutput.StartMenu();
-
-            //var nodes = Seeder.Data();
-
-            //var view = new PathFinderView(nodes);
-            //view.Display();
+            var view = new PathFinderView(nodes);
+            view.Display();
         }
     }
 }
