@@ -8,7 +8,7 @@
     public class Node
     {
         /// <summary>
-        /// Name property of objekt Node
+        /// Name property of object Node
         /// </summary>
         public string Name { get; set; }
 
