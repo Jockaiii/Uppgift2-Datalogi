@@ -7,6 +7,9 @@
     /// </summary>
     public class Node
     {
+        /// <summary>
+        /// Name property of objekt Node
+        /// </summary>
         public string Name { get; set; }
 
         /// <summary>

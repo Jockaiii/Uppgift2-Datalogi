@@ -95,17 +95,17 @@
             // Calculate min cost from each node to start.
             while (que.Count > 0)
             {
-                var nodeCost = que.Dequeue();
+                var currentNodeCost = que.Dequeue();
 
                 // For every edge of current node.
-                foreach (var edge in nodeCost.Node.Edges)
+                foreach (var edge in currentNodeCost.Node.Edges)
                 {
                     // Except edge back to node that has been visited.
-                    if (nodeCosts.Find((nc) => nc.Node == nodeCost.Node) != null) continue;
+                    if (nodeCosts.Find((nc) => nc.Node == currentNodeCost.Node) != null) continue;
 
                     // Set node and cost towards start from edge node.
-                    var edgeCostToStart = nodeCost.CostToStart + edge.Weight;
-                    var edgeNodeCost = new NodeCost(edge.Node, nodeCost, edgeCostToStart);
+                    var edgeCostToStart = currentNodeCost.CostToStart + edge.Weight;
+                    var edgeNodeCost = new NodeCost(edge.Node, currentNodeCost, edgeCostToStart);
 
                     var previousCost = nodeCosts.Find((nc) => nc.Node == edgeNodeCost.Node);
 
@@ -125,9 +125,9 @@
                 }
 
                 // Node is visited, min cost determined.
-                if (nodeCosts.Find((nc) => nc.Node == nodeCost.Node) is null)
+                if (nodeCosts.Find((nc) => nc.Node == currentNodeCost.Node) is null)
                 {
-                    nodeCosts.Add(nodeCost);
+                    nodeCosts.Add(currentNodeCost);
                 }
             }
 
