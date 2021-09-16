@@ -7,7 +7,6 @@
         private static void Main()
         {
             var nodes = Seeder.Data();
-
             var view = new PathFinderView(nodes);
             view.Display();
         }

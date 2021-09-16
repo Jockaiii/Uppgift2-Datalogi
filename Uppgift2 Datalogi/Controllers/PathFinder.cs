@@ -86,18 +86,16 @@
             List<NodeCost> nodeCosts = new List<NodeCost>();
             var startNodeCost = new NodeCost(start, null, 0);
 
-            // Initialize the prio queue with start.
-            List<NodeCost> queue = new List<NodeCost>();
-            queue.Add(startNodeCost);
+            // Initialize the queue with start.
+            Queue<NodeCost> que = new Queue<NodeCost>();
+            que.Enqueue(startNodeCost);
 
             var queuedCount = 0;
 
             // Calculate min cost from each node to start.
-            while (queue.Count > 0)
+            while (que.Count > 0)
             {
-                // Take first
-                var nodeCost = queue.FirstOrDefault();
-                queue.RemoveAt(0);
+                var nodeCost = que.Dequeue();
 
                 // For every edge of current node.
                 foreach (var edge in nodeCost.Node.Edges)
@@ -122,7 +120,7 @@
                     }
 
                     // Queue edge to have its min cost to start determined.
-                    queue.Add(edgeNodeCost);
+                    que.Enqueue(edgeNodeCost);
                     queuedCount++;
                 }
 

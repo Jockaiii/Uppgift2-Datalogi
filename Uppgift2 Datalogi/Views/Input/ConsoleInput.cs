@@ -31,8 +31,7 @@
                 case "E":
                     return input;
                 default:
-                    Console.Clear();
-                    Console.WriteLine("Wrong type of input, please try again\n");
+                    Console.WriteLine($"Could not find \"{input}\"\n");
                     return PromptMenuSelect();
             }
         }
