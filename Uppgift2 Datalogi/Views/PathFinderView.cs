@@ -58,6 +58,7 @@
 
             var end = ConsoleInput.PromptNode(allowedNodes, "end");
 
+            PathFinder.SearchCost = 0;
             var (path, cost) = PathFinder.ShortestPath(start, end);
 
             Console.WriteLine($"Shortest path found between {start.Name} and {end.Name}:\n");
@@ -81,6 +82,7 @@
 
             var end = ConsoleInput.PromptNode(allowedNodes, "end");
 
+            PathFinder.SearchCost = 0;
             var (path, cost) = PathFinder.ShortestPath(start, visit, end);
 
             Console.WriteLine($"Shortest path found between {start.Name} and {end.Name} when also visiting {visit.Name}:\n");
