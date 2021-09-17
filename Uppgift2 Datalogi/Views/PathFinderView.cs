@@ -62,7 +62,8 @@
 
             Console.WriteLine($"Shortest path found between {start.Name} and {end.Name}:\n");
             WritePath(path);
-            Console.WriteLine($"Total cost: {cost}\n");
+            Console.WriteLine($"Total cost of path: {cost}\n");
+            Console.WriteLine($"Search cost in queued node iterations: {PathFinder.DijkstraQueuedNodeCosts}\n");
         }
 
         /// <summary>
@@ -75,16 +76,17 @@
             var start = ConsoleInput.PromptNode(allowedNodes, "start");
             allowedNodes.Remove(start);
 
-            var end = ConsoleInput.PromptNode(allowedNodes, "end");
-            allowedNodes.Remove(end);
-
             var visit = ConsoleInput.PromptNode(allowedNodes, "visiting");
+            allowedNodes.Remove(visit);
+
+            var end = ConsoleInput.PromptNode(allowedNodes, "end");
 
             var (path, cost) = PathFinder.ShortestPath(start, visit, end);
 
             Console.WriteLine($"Shortest path found between {start.Name} and {end.Name} when also visiting {visit.Name}:\n");
             WritePath(path);
-            Console.WriteLine($"Total cost: {cost}\n");
+            Console.WriteLine($"Total cost of path: {cost}\n");
+            Console.WriteLine($"Search cost in queued node iterations: {PathFinder.DijkstraQueuedNodeCosts}\n");
         }
 
         /// <summary>

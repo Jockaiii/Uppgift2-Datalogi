@@ -8,6 +8,11 @@
     public static class PathFinder
     {
         /// <summary>
+        /// Number of node costs queued for evalauation when calculating shortest path from any node to a starting node.
+        /// </summary>
+        public static int DijkstraQueuedNodeCosts { get; private set; }
+
+        /// <summary>
         /// Implementing Dijkstras algorithm to find the shortest path between <paramref name="start"/> and <paramref name="end"/>.
         /// </summary>
         /// <param name="start">Node to begin the path on, and in the same graph as <paramref name="end"/>.</param>
@@ -17,6 +22,7 @@
         public static (List<Node> path, int cost) ShortestPath(Node start, Node end)
         {
             // Calculate min costs from each node to start.
+            DijkstraQueuedNodeCosts = 0;
             var minCostsToStart = DijkstrasCosts(start);
 
             var endNodeCost = minCostsToStart.Find((nc) => nc.Node == end);
@@ -41,6 +47,7 @@
         /// <time-complexity-worst-case>O(2n + 2m * e)</time-complexity-worst-case>
         public static (List<Node> path, int cost) ShortestPath(Node start, Node visit, Node end)
         {
+            DijkstraQueuedNodeCosts = 0;
             var (path, cost) = ShortestPath(start, visit);
             var visitToEnd = ShortestPath(visit, end);
 
@@ -115,6 +122,7 @@
 
                     // Queue edge to have its min cost to start determined.
                     que.Enqueue(edgeNodeCost);
+                    DijkstraQueuedNodeCosts++;
                 }
 
                 var previousCostIndex = nodeCosts.FindIndex((nc) => nc.Node == currNodeCost.Node);
