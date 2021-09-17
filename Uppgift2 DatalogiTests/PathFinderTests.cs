@@ -24,7 +24,7 @@ namespace Uppgift2_Datalogi.Tests
             Node nodeB = Nodes.Find((node) => node.Name == "B");
 
             var expectedVisited = new List<Node>() { nodeA, nodeB };
-            var expectedTotalCost = 4;
+            const int expectedTotalCost = 4;
 
             (List<Node> path, int cost) expected = (expectedVisited, expectedTotalCost);
 
@@ -49,7 +49,7 @@ namespace Uppgift2_Datalogi.Tests
             Node nodeJ = Nodes.Find((node) => node.Name == "J");
 
             var expectedVisited = new List<Node>() { nodeA, nodeB, nodeH, nodeJ };
-            var expectedTotalCost = 18;
+            const int expectedTotalCost = 18;
 
             (List<Node> path, int cost) expected = (expectedVisited, expectedTotalCost);
 

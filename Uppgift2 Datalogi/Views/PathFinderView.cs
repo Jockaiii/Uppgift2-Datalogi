@@ -9,9 +9,6 @@
     public class PathFinderView
     {
         private List<Node> Nodes { get; }
-        private Node Start { get; set; }
-        private Node Visit { get; set; }
-        private Node End { get; set; }
 
         /// <summary>
         /// Creates a view for a network of <paramref name="nodes"/>.
@@ -55,14 +52,15 @@
         private void FindShortestPathTwoNodes()
         {
             var allowedNodes = new List<Node>(Nodes);
-            Start = ConsoleInput.PromptNode(allowedNodes, "start");
 
-            allowedNodes.Remove(Start);
-            End = ConsoleInput.PromptNode(allowedNodes, "end");
+            var start = ConsoleInput.PromptNode(allowedNodes, "start");
+            allowedNodes.Remove(start);
 
-            var (path, cost) = PathFinder.ShortestPath(Start, End);
+            var end = ConsoleInput.PromptNode(allowedNodes, "end");
 
-            Console.WriteLine($"Shortest path found between {Start.Name} and {End.Name}:\n");
+            var (path, cost) = PathFinder.ShortestPath(start, end);
+
+            Console.WriteLine($"Shortest path found between {start.Name} and {end.Name}:\n");
             WritePath(path);
             Console.WriteLine($"Total cost: {cost}\n");
         }
@@ -73,17 +71,18 @@
         private void FindShortestPathThreeNodes()
         {
             var allowedNodes = new List<Node>(Nodes);
-            Start = ConsoleInput.PromptNode(allowedNodes, "start");
 
-            allowedNodes.Remove(Start);
-            End = ConsoleInput.PromptNode(allowedNodes, "end");
+            var start = ConsoleInput.PromptNode(allowedNodes, "start");
+            allowedNodes.Remove(start);
 
-            allowedNodes.Remove(End);
-            Visit = ConsoleInput.PromptNode(allowedNodes, "visiting");
+            var end = ConsoleInput.PromptNode(allowedNodes, "end");
+            allowedNodes.Remove(end);
 
-            var (path, cost) = PathFinder.ShortestPath(Start, Visit, End);
+            var visit = ConsoleInput.PromptNode(allowedNodes, "visiting");
 
-            Console.WriteLine($"Shortest path found between {Start.Name} and {End.Name} when also visiting {Visit.Name}:\n");
+            var (path, cost) = PathFinder.ShortestPath(start, visit, end);
+
+            Console.WriteLine($"Shortest path found between {start.Name} and {end.Name} when also visiting {visit.Name}:\n");
             WritePath(path);
             Console.WriteLine($"Total cost: {cost}\n");
         }

@@ -60,7 +60,7 @@
             var input = Console.ReadLine();
             Console.WriteLine();
 
-            // Get valid node with name equal to user input.
+            // Find node with name equal to user input.
             var node = validNodes.Find((node) => string.Equals(node.Name, input, StringComparison.OrdinalIgnoreCase));
 
             // If valid node is selected return it, otherwise prompt user input again.

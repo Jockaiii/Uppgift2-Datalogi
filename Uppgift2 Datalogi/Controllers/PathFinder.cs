@@ -86,8 +86,6 @@
             Queue<NodeCost> que = new Queue<NodeCost>();
             que.Enqueue(startNodeCost);
 
-            var queuedCount = 0;
-
             // Calculate min cost from each node to start.
             while (que.Count > 0)
             {
@@ -117,12 +115,10 @@
 
                     // Queue edge to have its min cost to start determined.
                     que.Enqueue(edgeNodeCost);
-
-                    queuedCount++; // TODO remove
                 }
 
                 var previousCostIndex = nodeCosts.FindIndex((nc) => nc.Node == currNodeCost.Node);
-                
+
                 // Node cost with previous nodes is determined, add, or update if closer.
                 if (previousCostIndex < 0)
                 {
@@ -134,7 +130,6 @@
                 }
             }
 
-            Console.WriteLine("Queued nodes cost:" + queuedCount); // TODO remove
             return nodeCosts;
         }
     }

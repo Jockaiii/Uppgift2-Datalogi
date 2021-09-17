@@ -3,21 +3,21 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// Represents a node (or point) in a network and it's connected nodes.
+    /// Represents a node (or point) in a network and it's connections (edges).
     /// </summary>
     public class Node
     {
         public string Name { get; set; }
 
         /// <summary>
-        /// All connected nodes, and their weights.
+        /// Adjacent nodes, and their weights.
         /// </summary>
         public List<(Node Node, int Weight)> Edges { get; set; } = new List<(Node, int)>();
 
         /// <summary>
-        /// Creates an object of Node with <paramref name="name"/>.
+        /// Creates a named node.
         /// </summary>
-        /// <param name="name">Name of node</param>
+        /// <param name="name">Name of node.</param>
         public Node(string name)
         {
             Name = name;
