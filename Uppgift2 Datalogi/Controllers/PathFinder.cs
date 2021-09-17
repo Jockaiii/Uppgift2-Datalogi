@@ -8,12 +8,12 @@
     public static class PathFinder
     {
         /// <summary>
-        /// Implementing Dijkstras algorithm the shortest path between <paramref name="start"/> and <paramref name="end"/> is found.
+        /// Implementing Dijkstras algorithm to find the shortest path between <paramref name="start"/> and <paramref name="end"/>.
         /// </summary>
         /// <param name="start">Node to begin the path on, and in the same graph as <paramref name="end"/>.</param>
         /// <param name="end">Node to reach from <paramref name="start"/>.</param>
         /// <returns>Shortest path of nodes and total cost of that path.</returns>
-        /// <time-complexity>O(n + m * e)</time-complexity>
+        /// <time-complexity-worst-case>O(n + m * e)</time-complexity-worst-case>
         public static (List<Node> path, int cost) ShortestPath(Node start, Node end)
         {
             // Calculate min costs from each node to start.
@@ -32,13 +32,13 @@
         }
 
         /// <summary>
-        /// Implementing Dijkstras algorithm the shortest path between <paramref name="start"/>, <paramref name="visit"/>, and <paramref name="end"/> is found.
+        /// Implementing Dijkstras algorithm to find the shortest path between <paramref name="start"/>, <paramref name="visit"/>, and <paramref name="end"/>.
         /// </summary>
-        /// <param name="start"></param>
-        /// <param name="visit"></param>
-        /// <param name="end"></param>
-        /// <returns></returns>
-        /// <time-complexity>O(2n + 2m * e)</time-complexity>
+        /// <param name="start">Node to begin the path on, and in the same graph as <paramref name="end"/>.</param>
+        /// <param name="visit">Node to visit between <paramref name="start"/> and <paramref name="end"/>.</param>
+        /// <param name="end">Node to reach from <paramref name="start"/>.</param>
+        /// <returns>Shortest path of nodes and total cost of that path.</returns>
+        /// <time-complexity-worst-case>O(2n + 2m * e)</time-complexity-worst-case>
         public static (List<Node> path, int cost) ShortestPath(Node start, Node visit, Node end)
         {
             var (path, cost) = ShortestPath(start, visit);
@@ -54,12 +54,12 @@
         }
 
         /// <summary>
-        /// Build the path in reverse, from end to start.
+        /// Build the <paramref name="path"/> in reverse, from <paramref name="end"/> to start.
         /// </summary>
         /// <param name="end">Node to end the path on.</param>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        /// <time-complexity>O(n)</time-complexity>
+        /// <param name="path">Concatenate the path onto this.</param>
+        /// <returns>List of nodes representing the path, but in reverse order.</returns>
+        /// <time-complexity-worst-case>O(n) iterates through the linked list of nodes.</time-complexity-worst-case>
         private static List<Node> DijkstrasPath(NodeCost end, List<Node> path)
         {
             path.Add(end.Node);
@@ -75,12 +75,8 @@
         /// Implementation of Dijkstras algorithm, to find shortest paths from each node connected to <paramref name="start"/>.
         /// </summary>
         /// <param name="start">To find shortest paths to.</param>
-        /// <param name="end">
-        /// Node we are looking to find shortest path from <paramref name="start"/> to.
-        /// Satisfies the search.
-        /// </param>
         /// <returns>Min costs of each node when traveling to <paramref name="start"/>.</returns>
-        /// <time-complexity>O(n * e)</time-complexity>
+        /// <time-complexity-worst-case>O(n * e) iterates through all nodes and all edges connected to node.</time-complexity-worst-case>
         private static List<NodeCost> DijkstrasCosts(Node start)
         {
             List<NodeCost> nodeCosts = new List<NodeCost>();
@@ -95,49 +91,51 @@
             // Calculate min cost from each node to start.
             while (que.Count > 0)
             {
-                var nodeCost = que.Dequeue();
+                var currNodeCost = que.Dequeue();
 
                 // For every edge of current node.
-                foreach (var edge in nodeCost.Node.Edges)
+                foreach (var edge in currNodeCost.Node.Edges)
                 {
-                    // Except edge back to node that has been visited.
-                    if (nodeCosts.Find((nc) => nc.Node == nodeCost.Node) != null) continue;
+                    // Except edge back to node that has been determined.
+                    if (nodeCosts.Find((nc) => nc.Node == edge.Node) != null) continue;
 
                     // Set node and cost towards start from edge node.
-                    var edgeCostToStart = nodeCost.CostToStart + edge.Weight;
-                    var edgeNodeCost = new NodeCost(edge.Node, nodeCost, edgeCostToStart);
+                    var edgeCostToStart = currNodeCost.CostToStart + edge.Weight;
+                    var edgeNodeCost = new NodeCost(edge.Node, currNodeCost, edgeCostToStart);
 
-                    var previousCost = nodeCosts.Find((nc) => nc.Node == edgeNodeCost.Node);
+                    var prevEdgeCost = nodeCosts.Find((nc) => nc.Node == edgeNodeCost.Node);
 
-                    // Compare previous cost. 
-                    if (previousCost != null)
+                    if (prevEdgeCost != null)
                     {
-                        if (previousCost.CostToStart > edgeNodeCost.CostToStart)
+                        // Compare previous node cost for edge and redirect current node cost if closer. 
+                        if (prevEdgeCost.CostToStart < edgeCostToStart)
                         {
-                            previousCost.CostToStart = edgeNodeCost.CostToStart;
-                            previousCost.TowardStart = edgeNodeCost.TowardStart;
+                            currNodeCost.CostToStart = prevEdgeCost.CostToStart + edge.Weight;
+                            currNodeCost.TowardStart = prevEdgeCost;
                         }
                     }
 
                     // Queue edge to have its min cost to start determined.
                     que.Enqueue(edgeNodeCost);
-                    queuedCount++;
+
+                    queuedCount++; // TODO remove
                 }
 
-                // Node is visited, min cost determined.
-                if (nodeCosts.Find((nc) => nc.Node == nodeCost.Node) is null)
+                var previousCostIndex = nodeCosts.FindIndex((nc) => nc.Node == currNodeCost.Node);
+                
+                // Node cost with previous nodes is determined, add, or update if closer.
+                if (previousCostIndex < 0)
                 {
-                    nodeCosts.Add(nodeCost);
+                    nodeCosts.Add(currNodeCost);
+                }
+                else if (nodeCosts[previousCostIndex].CostToStart > currNodeCost.CostToStart)
+                {
+                    nodeCosts[previousCostIndex] = currNodeCost;
                 }
             }
 
+            Console.WriteLine("Queued nodes cost:" + queuedCount); // TODO remove
             return nodeCosts;
-        }
-
-        // TODO can we make recursive and for any amount of nodes to visit?
-        public static int ShortestPath(Node start, Node end, Node[] visits)
-        {
-            throw new NotImplementedException();
         }
     }
 }
