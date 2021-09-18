@@ -8,7 +8,7 @@
     public static class PathFinder
     {
         /// <summary>
-        /// Number of node costs queued for evalauation when calculating shortest path from any node to a starting node.
+        /// Number of node costs queued when calculating shortest path from any node to a starting node.
         /// </summary>
         public static int SearchCost { get; set; }
 

@@ -63,7 +63,7 @@
 
             Console.WriteLine($"Shortest path found between {start.Name} and {end.Name}:\n");
             WritePath(path);
-            Console.WriteLine($"Total cost of path: {cost}\n");
+            Console.WriteLine($"Cost of path: {cost}\n");
             Console.WriteLine($"Search cost: {PathFinder.SearchCost}\n");
         }
 
@@ -87,7 +87,7 @@
 
             Console.WriteLine($"Shortest path found between {start.Name} and {end.Name} when also visiting {visit.Name}:\n");
             WritePath(path);
-            Console.WriteLine($"Total cost of path: {cost}\n");
+            Console.WriteLine($"Cost of path: {cost}\n");
             Console.WriteLine($"Search cost: {PathFinder.SearchCost}\n");
         }
 
